@@ -9,7 +9,7 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function HomePage() {
   const isKeyboardVisible = useKeyboardVisible();
-  console.log(isKeyboardVisible)
+  // console.log(isKeyboardVisible)
   return (
     // <ScrollView >
     <View style={styles.home} >

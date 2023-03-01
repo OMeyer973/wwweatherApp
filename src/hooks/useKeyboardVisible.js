@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
-import SearchBar from '../components/SearchBar';
+// import SearchBar from '../components/SearchBar';
 import { theme } from '../theme';
 import { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';

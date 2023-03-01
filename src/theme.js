@@ -39,7 +39,7 @@ export const theme = {
     color: "#000"
   },
 
-  label: {
+  input: {
     color: "rgba(0, 0, 0, 0.7)",
     backgroundColor: "#EDF1F2"
   },
