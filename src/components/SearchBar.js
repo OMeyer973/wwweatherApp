@@ -1,13 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { theme } from '../constants';
+import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { theme } from '../theme';
 import { padding } from '../helper';
-
+// import SearchIcon from "../../assets/icons/search.svg"
 
 export default function SearchBar() {
   return (
-    <View className="search-bar"
-    >
+    <View className="search-bar" style={styles.searchBar}>
       <TextInput
         style={styles.input}
         type="text"
@@ -16,20 +15,38 @@ export default function SearchBar() {
         required
         size={20}
       />
-      {/* // todo : decompose input & btn into atoms ? */}
-      <Button title="search" className="search-icon" type="submit" value="submit"></Button>
+
+      <TouchableOpacity style={styles.searchButton}>
+        {/* <SearchIcon /> */}
+        <Text style={theme.buttonPrimary.text}>Search</Text>
+      </TouchableOpacity >
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  searchBar: {
+    marginHorizontal: -12,
+    flexDirection: 'row'
+  },
   input: {
-    color: theme.colors.labelColor,
-    backgroundColor: theme.colors.labelBgColor,
-    borderRadius: 18,
+    ...theme.label,
+    borderRadius: 16,
     // ...padding(2.4, 12, 2.4, 30),
-    paddingVertical: 2.4,
+    paddingTop: 4,
+    paddingBottom: 3,
     paddingHorizontal: 12,
     // height: 500,
+    flexGrow: 1,
+    marginRight: 8
   },
+  searchButton: {
+    // ...theme.label,
+    borderRadius: 16,
+    ...theme.buttonPrimary,
+    // ...padding(2.4, 12, 2.4, 30),
+    paddingTop: 7,
+    paddingBottom: 0,
+    paddingHorizontal: 12,
+  }
 })
