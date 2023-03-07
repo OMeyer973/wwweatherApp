@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 import CloseIcon from '../../assets/icons/UI/CloseIcon';
 // import { useKeyboardVisible } from '../hooks/useKeyboardVisible';
 
-export default function SearchBar() {
+const SearchBar = ({ onSearch, onClear, ...props }) => {
   // buttonIsActive = useKeyboardVisible();
 
   // to keep the value to send to API
@@ -16,14 +16,15 @@ export default function SearchBar() {
   // just to clear on click
   const inputRef = useRef("");
 
-  const onClear = () => {
+  const _onClear = () => {
     inputRef.current.clear();
     setSearchInput("");
+    onClear();
   }
 
   const buttonIsActive = Boolean(searchInput);
   return (
-    <View className="search-bar" style={styles.searchBar}>
+    <View {...props} className="search-bar" style={{ ...styles.searchBar, ...props.style }}>
       <TextInput
         ref={inputRef}
         style={styles.input}
@@ -35,16 +36,21 @@ export default function SearchBar() {
         onChangeText={(value) => {
           inputRef.current.value = value;
           setSearchInput(value)
+          if (value == "") _onClear();
         }}
+        onSubmitEditing={() => onSearch(searchInput)}
       />
       {buttonIsActive &&
-        <TouchableOpacity style={{ ...styles.searchButton, marginRight: 8 }} onPress={onClear}>
+        <TouchableOpacity style={{ ...styles.searchButton, marginRight: 8 }} onPress={_onClear}>
           <CloseIcon
             size={20}
           />
         </TouchableOpacity >
       }
-      <TouchableOpacity style={{ ...styles.searchButton, ...(buttonIsActive ? { ...styles.searchButton.active } : {}) }}>
+      <TouchableOpacity
+        style={{ ...styles.searchButton, ...(buttonIsActive ? { ...styles.searchButton.active } : {}) }}
+        onPress={() => onSearch(searchInput)}
+      >
         <SearchIcon color={buttonIsActive ? "white" : ""} />
       </TouchableOpacity >
     </View>
@@ -78,3 +84,5 @@ const styles = StyleSheet.create({
     }
   }
 })
+
+export default SearchBar;
