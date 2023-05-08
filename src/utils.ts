@@ -1,3 +1,11 @@
+import {
+  WeatherData,
+  WindData,
+  WavesData,
+  WWWData,
+  Tide,
+} from "./types";
+
 const getShortHand = (style, ...values) => {
   if (values.length === 1) {
     return { [style]: values[0] }
@@ -21,19 +29,19 @@ export const padding = (...values) => getShortHand('padding', ...values)
 export const margin = (...values) => getShortHand('margin', ...values)
 
 ////// utils
-export const clamp = (x, a, b) =>
+export const clamp = (x: number, a: number, b: number) =>
   Math.max(a, Math.min(x, b));
 
 ////// parse weather server data
 
 // averages all the values of a given object (typescript abomination but very useful in our case)
-const avg = (data) => {
+const avg: (data: Object) => number = (data) => {
   if (data == undefined || data == null) {
     console.error("avg called on null or undefined");
     return 0;
   }
   return (
-    Object.values(data).reduce((average, value) =>
+    Object.values(data).reduce((average: any, value: any) =>
       typeof value === "number"
         ? average + value
         : console.error("avg called on object with non number values")
@@ -42,16 +50,16 @@ const avg = (data) => {
 };
 
 // meter per second to knots
-const mps2kts = (a) => a * 1.943844;
+const mps2kts = (a: number) => a * 1.943844;
 
 // precipitations in mm per hour (equivalent to  kg/m²) to risk of rain percentage, considering 3.33 mm per hour 100% rain
-const mmph2riskOfRainPercent = (a) => clamp(a * 30, 0, 100);
+const mmph2riskOfRainPercent = (a: number) => clamp(a * 30, 0, 100);
 
-const sum = (arr) => arr.reduce((a, b) => a + b);
+const sum = (arr: Array<number>) => arr.reduce((a: number, b: number) => a + b);
 
-const degToRad = (a) => (Math.PI / 180) * a;
+const degToRad = (a: number) => (Math.PI / 180) * a;
 
-const meanAngleDeg = (arr) =>
+const meanAngleDeg = (arr: Array<number>) =>
   ((180 / Math.PI) *
     Math.atan2(
       sum(arr.map(degToRad).map(Math.sin)) / arr.length,
@@ -61,7 +69,7 @@ const meanAngleDeg = (arr) =>
   360;
 
 // averages all the angle values (in degree) of a given object
-const avgAngle = (data) => {
+const avgAngle = (data: Object) => {
   if (data == undefined || data == null) {
     console.error("avgAngle called on null or undefined");
     return 0;
@@ -70,7 +78,7 @@ const avgAngle = (data) => {
 };
 
 // rawHourlyDataresult of a stormglass api fetch
-export const makeWWWData = (rawHourlyData) => {
+export const makeWWWData: (rawHourlyData: any) => WWWData = (rawHourlyData) => {
   const wavesData =
     rawHourlyData.waveDirection && rawHourlyData.waveHeight
       ? {
@@ -80,7 +88,7 @@ export const makeWWWData = (rawHourlyData) => {
         //   rawHourlyData.seaLevel === undefined
         //     ? 0 // todo fixx !
         //     : avg(rawHourlyData.seaLevel) * 20,
-        tide: "rising", // todo
+        tide: "rising" as Tide, // todo
       }
       : undefined;
 
@@ -100,21 +108,24 @@ export const makeWWWData = (rawHourlyData) => {
   };
 };
 
-export const isSameDay = (a, b) => {
+export const isSameDay: (a: Date, b: Date) => boolean = (a, b) => {
   if (!a || !b) console.error("isSameDay got bad inputs");
   const res = a && b && a.toDateString() == b.toDateString();
   return res;
 };
 
 //unused misc
-export const minMax = (array, fn) =>
-  array.reduce((item, acc, arr) => ({
-    min: fn(item, acc.min) ? item : acc.min,
-    max: fn(acc.max, item) ? item : acc.min,
-  }));
+export const minMax: (
+  array: any[],
+  fn: (a: any, b: any) => boolean
+) => { min: any; max: any } = (array, fn) =>
+    array.reduce((item, acc, arr) => ({
+      min: fn(item, acc.min) ? item : acc.min,
+      max: fn(acc.max, item) ? item : acc.min,
+    }));
 
 //downloads json data on the clients computer
-const handleSaveToPC = (jsonData, filename) => {
+const handleSaveToPC = (jsonData: any, filename: string) => {
   const fileData = JSON.stringify(jsonData);
   const blob = new Blob([fileData], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
@@ -127,13 +138,13 @@ const handleSaveToPC = (jsonData, filename) => {
 // throttle the rate at which a callback can be called
 // usage :
 // window.addEventListener("resize", throttle(handleResize, 200));
-export const throttle = (
-  callback,
-  interval
+export const throttle: any = (
+  callback: (args: any) => any,
+  interval: number
 ) => {
   let enableCall = true;
 
-  return (...args) => {
+  return (...args: any) => {
     if (!enableCall) return;
 
     enableCall = false;

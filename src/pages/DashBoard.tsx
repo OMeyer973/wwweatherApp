@@ -1,24 +1,39 @@
-import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import SearchBar from '../components/SearchBar';
-import { useKeyboardVisible } from '../hooks/useKeyboardVisible';
-import { theme } from '../theme';
+import React from "react";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import SearchBar from "../components/SearchBar";
+import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
+import { theme } from "../theme";
 
-import { Dimensions, StatusBar } from 'react-native'
-import { useEffect, useState } from 'react';
-import RightArrowIcon from '../../assets/icons/UI/RightArrowIcon';
-import { numberDaysPredicted, oneDay, oneHour, placeholderWWWData, startDate } from '../constants';
-import { makeWWWData } from '../helper';
+import { Dimensions, StatusBar } from "react-native";
+import { useEffect, useState } from "react";
+import RightArrowIcon from "../../assets/icons/UI/RightArrowIcon";
+import {
+  numberDaysPredicted,
+  oneDay,
+  oneHour,
+  placeholderWWWData,
+  startDate,
+} from "../constants";
+import { makeWWWData } from "../utils";
 
 import dummyRawWeatherData from "../dummyRawWeatherData.json";
-import LocationTab from './Dashboard/LocationTab';
+import { Location, Coordinates, WWWData } from "../types";
+import LocationTab from "./Dashboard/LocationTab";
 
 // start yesterday at midnight (local time)
 
-const placeholderWeatherPredictionsByHour = [placeholderWWWData];
+const placeholderWeatherPredictionsByHour: WWWData[] = [placeholderWWWData];
 
 const weatherKeys = [
-  "8ea1e1a8-ae72-11eb-849d-0242ac130002-8ea1e248-ae72-11eb-849d-0242ac130002",
-  // "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
+  // "8ea1e1a8-ae72-11eb-849d-0242ac130002-8ea1e248-ae72-11eb-849d-0242ac130002",
+  "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
   // "66b43972-ae8e-11eb-8d12-0242ac130002-66b439ea-ae8e-11eb-8d12-0242ac130002",
   // "2c7517f8-ae8f-11eb-9f40-0242ac130002-2c7518fc-ae8f-11eb-9f40-0242ac130002",
   // "025354a6-b1e3-11eb-9f40-0242ac130002-0253551e-b1e3-11eb-9f40-0242ac130002",
@@ -30,7 +45,7 @@ const weatherKeys = [
   // "c85bc6b4-b2a7-11eb-80d0-0242ac130002-c85bc72c-b2a7-11eb-80d0-0242ac130002",
   // "03ccbf6e-b2ad-11eb-849d-0242ac130002-03ccbffa-b2ad-11eb-849d-0242ac130002",
 ];
-const fetchWeatherData = async (coordinates) => {
+const fetchWeatherData = async (coordinates: Coordinates) => {
   const lat = coordinates.latitude;
   const lng = coordinates.longitude;
   // console.log("fetching WWW Data");
@@ -46,7 +61,7 @@ const fetchWeatherData = async (coordinates) => {
   return data;
 };
 
-const getWeatherPredictions = async (
+const getWeatherPredictions: (coordinates: Coordinates) => any = async (
   coordinates
 ) => {
   const weatherFromServer = await fetchWeatherData(coordinates);
@@ -61,10 +76,10 @@ const getWeatherPredictions = async (
       ? dummyRawWeatherData
       : weatherFromServer;
 
-  return rawWeatherData.hours.map((hour) => makeWWWData(hour));
+  return rawWeatherData.hours.map((hour: any) => makeWWWData(hour));
 };
 
-const fetchAstroData = async (coordinates) => {
+const fetchAstroData = async (coordinates: Coordinates) => {
   const endDate = new Date(
     startDate.valueOf() + numberDaysPredicted * oneDay - oneHour
   );
@@ -83,7 +98,7 @@ const fetchAstroData = async (coordinates) => {
   return data;
 };
 
-const fetchTideData = async (coordinates) => {
+const fetchTideData = async (coordinates: Coordinates) => {
   // further end date than astro data bc astro returns one data object per day vs one per tide here
   const endDate = new Date(
     startDate.valueOf() + numberDaysPredicted * oneDay + oneHour
@@ -103,13 +118,17 @@ const fetchTideData = async (coordinates) => {
   return data;
 };
 
-const angleToCardinal = (angle) => {
+const angleToCardinal = (angle: number) => {
   const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"];
   return directions[Math.round((angle % 360) / 45)];
 };
 
+export interface Props {
+  location: Location | null;
+  setLocation: any; // todo
+}
 
-const Dashboard = ({ location, setLocation }) => {
+const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
   const [weatherPredictionsByHour, setWeatherPredictionsByHour] = useState(
     placeholderWeatherPredictionsByHour
   ); // todo make null & fix errors
@@ -117,18 +136,14 @@ const Dashboard = ({ location, setLocation }) => {
   const [astroData, setAstroData] = useState([]);
   const [tideData, setTideData] = useState([]);
 
-  console.log("weatherPredictionsByHour", weatherPredictionsByHour)
-  console.log("astroData", astroData)
-  console.log("tideData", tideData)
-
   useEffect(() => {
     if (location && location.coordinates) {
       getWeatherPredictions(location.coordinates).then(
-        (newPredictions) => {
+        (newPredictions: WWWData[]) => {
           setWeatherPredictionsByHour(newPredictions);
           setCurrentHourId(
-            newPredictions.findIndex(
-              (item) =>
+            newPredictions?.findIndex(
+              (item: WWWData) =>
                 Math.abs(item.time.valueOf() - Date.now()) < oneHour
             )
           );
@@ -143,7 +158,6 @@ const Dashboard = ({ location, setLocation }) => {
       );
     }
   }, [location]);
-
 
   return (
     <>
@@ -268,9 +282,9 @@ const Dashboard = ({ location, setLocation }) => {
 const styles = StyleSheet.create({
   dashboard: {
     marginTop: StatusBar.currentHeight + 8,
-    height: '100%',
-    width: '100%',
-  }
+    height: "100%",
+    width: "100%",
+  },
 });
 
 export default Dashboard;

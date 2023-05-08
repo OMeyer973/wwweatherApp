@@ -1,11 +1,19 @@
-////// Constants
+import {
+  TimetableData,
+  WeatherData,
+  WindData,
+  WavesData,
+  WWWData,
+  Tide,
+} from "./types";
+
 export const oneDay = 86400000;
 export const oneHour = 3600000;
 
 export const startDate = new Date(new Date().setHours(0, 0, 0, 0) - oneDay);
 export const numberDaysPredicted = 10;
 
-export const placeholderWWWData = {
+export const placeholderWWWData: WWWData = {
   time: new Date(),
   weatherData: {
     cloudCover: 0,
@@ -23,3 +31,4 @@ export const placeholderWWWData = {
     tide: "low",
   },
 };
+
