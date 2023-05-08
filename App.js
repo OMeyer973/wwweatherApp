@@ -2,8 +2,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import HomePage from './src/pages/HomePage';
+import { useEffect, useState } from 'react';
+import Dashboard from './src/pages/DashBoard';
 
 export default function App() {
+  const [showHomePage, setShowHomePage] = useState(true)
+  const [location, setLocation] = useState(null)
+
+  useEffect(() => {
+    if (location?.name) {
+      setShowHomePage(false);
+    } else {
+      setShowHomePage(true);
+    }
+  }, [location])
+
   return (
     <LinearGradient
       colors={['rgba(0, 211, 255, 0.3)', 'rgba(255, 63, 0, 0.3)']}
@@ -12,7 +25,10 @@ export default function App() {
       style={styles.body}
     >
       <StatusBar style="auto" />
-      <HomePage />
+      {showHomePage
+        ? <HomePage setLocation={setLocation} />
+        : <Dashboard location={location} setLocation={setLocation} />
+      }
     </LinearGradient>
   );
 }
@@ -23,5 +39,6 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     backgroundColor: '#fff',
+    // height: "100%",
   },
 });

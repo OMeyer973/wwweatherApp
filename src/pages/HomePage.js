@@ -9,18 +9,36 @@ import RightArrowIcon from '../../assets/icons/UI/RightArrowIcon';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const HomePage = () => {
+const HomePage = ({ setLocation }) => {
   const onSearch = async (searchString) => {
     setSearchQuery({ ...searchQuery, query: [searchString] });
-    console.log(searchString)
-    if (!searchString || searchString == "" || (searchQuery?.query[0] == searchString && earchQuery?.features?.length > 0)) return null;
+    console.log("searchString", searchString)
+    if (!searchString || searchString == "" || (searchQuery?.query[0] == searchString && searchQuery?.features?.length > 0)) return null;
     const res = await fetch(
       `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchString}.json?access_token=pk.eyJ1Ijoic2hhbWFya2luIiwiYSI6ImNra2d2aGxydjAzYTUyb21tY3IzazNzamkifQ.lahFmUNO07-YoSdAFi0ZSA`,
       {}
     );
     const data = await res.json();
-    console.log(data);
-    setSearchQuery(data);
+
+    const features = data?.features.map(feature => {
+      const name = feature.place_name?.split(", ")[0]
+      const region = feature.place_name?.split(", ")
+        .reduce((acc, namePart, id, array) => acc + (
+
+          id == 0
+            ? ""
+            : (namePart + (id < array.length - 1 ? ", " : ""))
+        ), "")
+      const [lng, lat] = feature.center;
+      console.log("region", region)
+      return {
+        name: name,
+        region: region,
+        coordinates: { longitude: lng, latitude: lat },
+      }
+    })
+    // console.log(data);
+    setSearchQuery({ features: features, query: data.query });
   };
 
   const onClear = () => {
@@ -30,7 +48,7 @@ const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState({ features: [], query: [] });
 
   const isSearchUp = useKeyboardVisible() || Boolean(searchQuery?.query?.length);
-  // console.log(isKeyboardVisible)
+  console.log("isSearchUp", isSearchUp)
   return (
     // <ScrollView >
     <View style={styles.home} >
@@ -55,6 +73,7 @@ const HomePage = () => {
           <Text style={{ paddingBottom: 8 }}>Find a spot</Text>
           <SearchBar onSearch={onSearch} onClear={onClear} style={{ marginBottom: 6 }} />
 
+
           {searchQuery?.features?.map((feature, key) => <View key={key}>
             <View style={{
               ...theme.input,
@@ -71,16 +90,11 @@ const HomePage = () => {
               maxWidth: "100%",
               // overflow: "scroll"
             }}>
-                <Text style={{ flexShrink: 1 }}>{
-                  feature.place_name
-                    ?.split(", ")
-                    .map((namePart, id, array) => {
-                      if (id == 0) {
-                        return <Text key={id} style={{ fontWeight: "bold" }}>{namePart + (id < array.length - 1 ? ", " : "")}</Text>
-                      }
-                      return <Text key={id} style={{ color: "grey" }}>{namePart + (id < array.length - 1 ? ", " : "")}</Text>
-                    })
-                }</Text>
+                <Text style={{ flexShrink: 1 }}>
+                  <Text style={{ fontWeight: "bold" }}>{feature.name}</Text>
+                  {feature.region && <Text style={{ color: "grey" }}>{', '}</Text>}
+                  <Text style={{ color: "grey" }}>{feature.region}</Text>
+                </Text>
                 <TouchableOpacity
                   style={{
                     borderRadius: 0,
@@ -90,7 +104,7 @@ const HomePage = () => {
                     marginLeft: 4,
                     marginRight: 0,
                   }}
-                  onPress={() => console.log("todo")}
+                  onPress={() => setLocation(searchQuery?.features[key])}
                 >
                   <RightArrowIcon />
                 </TouchableOpacity >
@@ -114,20 +128,15 @@ const HomePage = () => {
 
 const styles = StyleSheet.create({
   home: {
-    // flex: 1,
-    paddingTop: 96,
     alignItems: 'center',
-    // justifyContent: 'center',
-    // height: '100%',
-    // overflow: "hidden",
     maxWidth: 448,
     width: "100%",
+    height: "100%",
   },
   title: {
-    // backgroundColor: "red",
+    marginTop: 48,
     textAlign: "right",
-    // width: "100%",
-    fontSize: 64, //min(5rem, 20vw);
+    fontSize: 64,
     fontWeight: "900",
     lineHeight: 64,
   },
@@ -138,9 +147,6 @@ const styles = StyleSheet.create({
   },
   container: {
     ...theme.cardPrimary,
-    // width: "100%"
-    // height: "100%"
-    // backgroundColor: "red",
   },
   credits: {
     marginTop: 48
