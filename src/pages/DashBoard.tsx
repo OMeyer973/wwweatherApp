@@ -27,6 +27,7 @@ import { makeWWWData } from "../utils";
 import dummyRawWeatherData from "../dummyRawWeatherData.json";
 import { Location, Coordinates, WWWData } from "../types";
 import LocationTab from "./Dashboard/LocationTab";
+import WeatherTab from "./Dashboard/WeatherTab";
 
 // start yesterday at midnight (local time)
 
@@ -190,10 +191,11 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
           location={location}
           windData={weatherPredictionsByHour[currentHourId].windData}
           wavesData={weatherPredictionsByHour[currentHourId].wavesData}
-        />
+        />*/}
         <WeatherTab
           weatherData={weatherPredictionsByHour[currentHourId].weatherData}
         />
+        {/*
         <div className="wind-waves-tab">
           <DirectionTab
             title="Wind"

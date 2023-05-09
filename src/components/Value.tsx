@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import CSS, { Property } from "csstype";
 
-// import "./value.scss";
 import { theme } from "../theme";
 
 type Flavor = "default" | "title" | "small" | "slim";
@@ -14,8 +13,8 @@ export interface Props {
 }
 
 const Value: React.FC<Props> = React.memo(({ children, flavor, style }) => {
-  console.log("flavor", flavor);
-  console.log("flavor", { ...styles.common, ...styles[flavor as Flavor] });
+  // console.log("flavor", flavor);
+  // console.log("style", { ...styles.common, ...styles[flavor as Flavor] });
   return (
     <Text style={{ ...styles.common, ...styles[flavor as Flavor] }}>
       {children}
