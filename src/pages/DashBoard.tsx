@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import SearchBar from "../components/SearchBar";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
-import { theme } from "../theme";
 
 import { Dimensions, StatusBar } from "react-native";
 import { useEffect, useState } from "react";
@@ -35,7 +34,7 @@ const placeholderWeatherPredictionsByHour: WWWData[] = [placeholderWWWData];
 
 const weatherKeys = [
   // "8ea1e1a8-ae72-11eb-849d-0242ac130002-8ea1e248-ae72-11eb-849d-0242ac130002",
-  "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
+  // "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
   // "66b43972-ae8e-11eb-8d12-0242ac130002-66b439ea-ae8e-11eb-8d12-0242ac130002",
   // "2c7517f8-ae8f-11eb-9f40-0242ac130002-2c7518fc-ae8f-11eb-9f40-0242ac130002",
   // "025354a6-b1e3-11eb-9f40-0242ac130002-0253551e-b1e3-11eb-9f40-0242ac130002",
@@ -45,7 +44,7 @@ const weatherKeys = [
   // "5393b808-b1fa-11eb-8d12-0242ac130002-5393b880-b1fa-11eb-8d12-0242ac130002",
   // "3ebcf5e6-b1fc-11eb-80d0-0242ac130002-3ebcf65e-b1fc-11eb-80d0-0242ac130002",
   // "c85bc6b4-b2a7-11eb-80d0-0242ac130002-c85bc72c-b2a7-11eb-80d0-0242ac130002",
-  // "03ccbf6e-b2ad-11eb-849d-0242ac130002-03ccbffa-b2ad-11eb-849d-0242ac130002",
+  "03ccbf6e-b2ad-11eb-849d-0242ac130002-03ccbffa-b2ad-11eb-849d-0242ac130002",
 ];
 const fetchWeatherData = async (coordinates: Coordinates) => {
   const lat = coordinates.latitude;
@@ -193,7 +192,10 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
           wavesData={weatherPredictionsByHour[currentHourId].wavesData}
         />*/}
         <WeatherTab
-          weatherData={weatherPredictionsByHour[currentHourId].weatherData}
+          weatherData={
+            weatherPredictionsByHour &&
+            weatherPredictionsByHour[currentHourId].weatherData
+          }
         />
         {/*
         <div className="wind-waves-tab">

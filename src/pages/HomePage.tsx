@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
 import SearchBar from "../components/SearchBar";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   },
   container: {
     ...theme.cardPrimary,
-  },
+  } as ViewStyle,
   credits: {
     marginTop: 48,
   },
