@@ -20,6 +20,7 @@ import {
   oneHour,
   placeholderWWWData,
   startDate,
+  statusBarHeight,
 } from "../constants";
 import { makeWWWData } from "../utils";
 
@@ -281,7 +282,7 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
 
 const styles = StyleSheet.create({
   dashboard: {
-    marginTop: StatusBar.currentHeight + 8,
+    marginTop: statusBarHeight,
     height: "100%",
     width: "100%",
   },

@@ -1,7 +1,9 @@
 import React from "react";
-import CSS from "csstype";
+import { StyleSheet, Text, View } from "react-native";
+import CSS, { Property } from "csstype";
 
-import "./value.scss";
+// import "./value.scss";
+import { theme } from "../theme";
 
 type Flavor = "default" | "title" | "small" | "slim";
 
@@ -12,15 +14,38 @@ export interface Props {
 }
 
 const Value: React.FC<Props> = React.memo(({ children, flavor, style }) => {
+  console.log("flavor", flavor);
+  console.log("flavor", { ...styles.common, ...styles[flavor as Flavor] });
   return (
-    <span className={`value ${flavor}`} style={style}>
+    <Text style={{ ...styles.common, ...styles[flavor as Flavor] }}>
       {children}
-    </span>
+    </Text>
   );
 });
 
 Value.defaultProps = {
   flavor: "default",
 };
+
+const styles = StyleSheet.create({
+  default: {
+    fontSize: 24,
+    fontWeight: "600",
+  },
+  small: {
+    fontWeight: "600",
+  },
+  // &.slim {
+  //   // none
+  // }
+  title: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: theme.title.color,
+  },
+  common: {
+    textAlign: "center",
+  },
+});
 
 export default Value;

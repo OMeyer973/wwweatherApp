@@ -15,6 +15,7 @@ import { Dimensions, StatusBar } from "react-native";
 import { useState } from "react";
 import RightArrowIcon from "../../assets/icons/UI/RightArrowIcon";
 import { SearchQuery } from "~types";
+import { statusBarHeight } from "../constants";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -96,7 +97,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
                 height: "100%",
                 zIndex: 1,
                 position: "absolute",
-                marginTop: StatusBar.currentHeight + 8,
+                marginTop: statusBarHeight,
               }
             : {}),
         }}

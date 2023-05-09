@@ -1,3 +1,4 @@
+import { StatusBar } from "react-native";
 import {
   TimetableData,
   WeatherData,
@@ -32,3 +33,5 @@ export const placeholderWWWData: WWWData = {
   },
 };
 
+// style
+export const statusBarHeight = StatusBar.currentHeight + 8
