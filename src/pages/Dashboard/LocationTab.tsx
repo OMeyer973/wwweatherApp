@@ -34,8 +34,8 @@ const LocationTab: React.FC<Props> = ({ location, country }) => {
   return (
     <View>
       <View style={theme.cardPrimary}>
-        <Value flavor="title">{location}</Value>
-        <Value flavor="slim">{country}</Value>
+        <Text style={theme.valueTitle}>{location}</Text>
+        <Text style={theme.valueSlim}>{country}</Text>
       </View>
     </View>
   );

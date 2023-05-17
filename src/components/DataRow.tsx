@@ -4,18 +4,17 @@ import CSS, { Property } from "csstype";
 
 import { theme } from "../theme";
 
-type Flavor = "default" | "title" | "small" | "slim";
-
-export interface Props {
-  children: React.ReactNode;
-  flavor?: Flavor;
-  style?: CSS.Properties;
+interface Props {
+  label: string;
+  value: string;
 }
 
-const Value: React.FC<Props> = React.memo(({ children, flavor, style }) => {
-  // console.log("flavor", flavor);
-  // console.log("style", { ...styles.common, ...styles[flavor as Flavor] });
-  return <Text style={styles[flavor as Flavor]}>{children}</Text>;
+const DataRow: React.FC<Props> = React.memo(({ label, value }) => {
+  return (
+    <View>
+      <Text></Text>
+    </View>
+  );
 });
 
 Value.defaultProps = {
@@ -40,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Value;
+export default DataRow;

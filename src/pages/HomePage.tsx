@@ -139,9 +139,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
               >
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    ...theme.flexUtil,
                     width: "100%",
                     maxWidth: "100%",
                     // overflow: "scroll"

@@ -68,6 +68,12 @@ const meanAngleDeg = (arr: Array<number>) =>
     360) %
   360;
 
+
+export const angleToCardinal = (angle: number) => {
+  const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"];
+  return directions[Math.round((angle % 360) / 45)];
+};
+
 // averages all the angle values (in degree) of a given object
 const avgAngle = (data: Object) => {
   if (data == undefined || data == null) {

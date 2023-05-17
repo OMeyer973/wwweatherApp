@@ -54,6 +54,28 @@ export const theme = {
     // Font: ""Poppins", sans- serif",
   },
 
+  label: {
+    color: labelColor,
+  },
+
+  value: {
+    color: labelColor,
+    fontSize: 24,
+    fontWeight: "600",
+  },
+  valueSmall: {
+    color: labelColor,
+    fontWeight: "600",
+  },
+  valueSlim: {
+    color: labelColor,
+  },
+  valueTitle: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: titleColor,
+  },
+
   data: {
     color: "#000"
   },
@@ -61,6 +83,14 @@ export const theme = {
   input: {
     color: "rgba(0, 0, 0, 0.7)",
     backgroundColor: "#EDF1F2"
+  },
+
+  flexUtil: {
+    display: "flex",
+    gap: 16,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   buttonPrimary,
