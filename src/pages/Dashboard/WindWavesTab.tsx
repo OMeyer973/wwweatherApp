@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   tab: {
-    ...(theme.cardPrimary as ViewStyle),
+    ...(theme.cardSecondary as ViewStyle),
     flexGrow: 1,
     flexShrink: 1,
   },

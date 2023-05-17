@@ -32,7 +32,6 @@ const buttonSecondary = StyleSheet.create({
 
 const cardPrimary = StyleSheet.create({
   backgroundColor: tabColor,
-  borderRadius: 24,
   paddingHorizontal: 26,
   paddingVertical: 24,
 });

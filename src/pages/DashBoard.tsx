@@ -21,7 +21,7 @@ import {
   startDate,
   statusBarHeight,
 } from "../constants";
-import { makeWWWData } from "../utils";
+import { makeWWWData, margin } from "../utils";
 
 import dummyRawWeatherData from "../dummyRawWeatherData.json";
 import { Location, Coordinates, WWWData } from "../types";
@@ -230,6 +230,16 @@ const styles = StyleSheet.create({
     marginTop: statusBarHeight,
     // height: "100%",
     // width: "100%",
+    maxWidth: 900,
+    // margin: margin(32, "auto"),
+    // border: 0.125em solid rgba(0, 0, 0, 0);
+    borderRadius: 24,
+    borderStyle: "solid",
+    borderWidth: 0,
+    borderColor: "rgba(0, 0, 0, 0)",
+
+    overflow: "hidden",
+    // filter: drop-shadow(0px 0.2em 2em rgba(0, 0, 0, 0.1));
   },
 });
 

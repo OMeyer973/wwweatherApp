@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   },
   container: {
     ...theme.cardPrimary,
+    borderRadius: 24,
   } as ViewStyle,
   credits: {
     marginTop: 48,
