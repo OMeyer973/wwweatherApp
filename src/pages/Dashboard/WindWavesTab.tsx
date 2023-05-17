@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   container: {
     ...theme.flexUtil,
     width: "100%",
+    gap: 2,
   },
   tab: {
     ...(theme.cardSecondary as ViewStyle),
