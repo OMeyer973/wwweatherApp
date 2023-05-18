@@ -96,5 +96,7 @@ export const theme = {
   buttonSecondary,
   cardPrimary,
   cardSecondary,
-  cardTransparent
+  cardTransparent,
+
+  labelBgColor,
 };

@@ -7,7 +7,6 @@ import { WindData, WavesData } from "types";
 
 import { angleToCardinal, clamp } from "../../utils";
 import { Svg, SvgUri } from "react-native-svg";
-// import { DataColumn } from "~components/molecules/DataColumn";
 
 import WindArrow from "../../../assets/icons/wind-kite-arrow.svg";
 import WavesArrow from "../../../assets/icons/waves-kite-arrow.svg";
@@ -106,9 +105,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   dataRow: { ...theme.flexUtil, marginBottom: 16, flexWrap: "wrap" },
-  WindWavesData: {
-    alignItems: "center",
-    maxWidth: 448,
-  },
 });
 export default WindWavesTab;

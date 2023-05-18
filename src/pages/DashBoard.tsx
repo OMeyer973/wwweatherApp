@@ -28,6 +28,7 @@ import { Location, Coordinates, WWWData } from "../types";
 import LocationTab from "./Dashboard/LocationTab";
 import WeatherTab from "./Dashboard/WeatherTab";
 import WindWavesTab from "./Dashboard/WindWavesTab";
+import { MapTab } from "./Dashboard/MapTab";
 
 // start yesterday at midnight (local time)
 
@@ -163,8 +164,8 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
   }, [location]);
 
   return (
-    <>
-      <View style={styles.dashboard}>
+    <View style={styles.dashboard}>
+      <ScrollView>
         <LocationTab
           location={location ? location.name : ""}
           country={location ? location.region : ""}
@@ -186,13 +187,12 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
               Math.min(weatherPredictionsByHour.length - 1, currentHourId + 3)
             );
           }}
-        />
-
+        />*/}
         <MapTab
           location={location}
           windData={weatherPredictionsByHour[currentHourId].windData}
           wavesData={weatherPredictionsByHour[currentHourId].wavesData}
-        />*/}
+        />
         {/* {console.log("weatherPredictionsByHour", weatherPredictionsByHour)}
         {console.log("currentHourId", currentHourId)} */}
         <WeatherTab
@@ -220,8 +220,8 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
           currentPredictionId={currentHourId}
           setCurrentPredictionId={setCurrentHourId}
         /> */}
-      </View>
-    </>
+      </ScrollView>
+    </View>
   );
 };
 
