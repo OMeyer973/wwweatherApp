@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,8 @@ import Value from "../../components/Value";
 import { theme } from "../../theme.js";
 import { Location, WindData, WavesData } from "types";
 
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+
 import { angleToCardinal, clamp } from "../../utils";
 import { Svg, SvgUri } from "react-native-svg";
 // import { DataColumn } from "~components/molecules/DataColumn";
@@ -20,8 +22,8 @@ import { Svg, SvgUri } from "react-native-svg";
 // import { Map } from "~/components/atoms/Map";
 // import { Magnet } from "~/components/atoms/Magnet";
 
-import WindArrow from "../../../assets/icons/wind-kite-arrow.svg";
-import WavesArrow from "../../../assets/icons/waves-kite-arrow.svg";
+// import WindArrow from "../../../assets/icons/wind-kite-arrow.svg";
+// import WavesArrow from "../../../assets/icons/waves-kite-arrow.svg";
 
 export interface Props {
   location: Location | null;
@@ -31,6 +33,30 @@ export interface Props {
 
 export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
   const [bearing, setBearing] = useState(-10);
+
+  const [mapCamera, setMapCamera] = useState({
+    center: {
+      latitude: location?.coordinates?.latitude || 0,
+      longitude: location?.coordinates?.longitude || 0,
+    },
+    heading: 0,
+    pitch: 0,
+    zoom: 10,
+  });
+
+  const mapViewRef = useRef(null);
+
+  useEffect(() => {
+    setMapCamera({
+      center: {
+        latitude: location?.coordinates?.latitude || 0,
+        longitude: location?.coordinates?.longitude || 0,
+      },
+      heading: 0,
+      pitch: 0,
+      zoom: 10,
+    });
+  }, [location]);
 
   const invertTags = () => {
     if (!wavesData || !windData) return false;
@@ -44,9 +70,6 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
     // ;
   };
 
-  const rotateBearing = "rotate(" + bearing + "deg)";
-  const rotateBearing45 = "rotate(" + (bearing + 45) + "deg)";
-
   return (
     <View style={styles.tab}>
       {!location || !location.coordinates ? (
@@ -54,9 +77,10 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
       ) : (
         <View style={styles.compassHolder}>
           <View
+            // https://stackoverflow.com/questions/75772025/react-native-invalid-prop-transform-of-type-string-supplied-expected-an-ar
             style={{
               ...styles.compass,
-              transform: "rotate(" + -bearing + "deg)",
+              transform: [{ rotate: `${-bearing}deg` }],
             }}
           >
             <View
@@ -65,28 +89,40 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
             >
               <View style={[styles.cardinalTop]}>
                 <Text
-                  style={[styles.cardinalText, { transform: rotateBearing }]}
+                  style={[
+                    styles.cardinalText,
+                    { transform: [{ rotate: `${bearing}deg` }] },
+                  ]}
                 >
                   N
                 </Text>
               </View>
               <View style={[styles.cardinalLeft]}>
                 <Text
-                  style={[styles.cardinalText, { transform: rotateBearing }]}
+                  style={[
+                    styles.cardinalText,
+                    { transform: [{ rotate: `${bearing}deg` }] },
+                  ]}
                 >
                   O
                 </Text>
               </View>
               <View style={[styles.cardinalRight]}>
                 <Text
-                  style={[styles.cardinalText, { transform: rotateBearing }]}
+                  style={[
+                    styles.cardinalText,
+                    { transform: [{ rotate: `${bearing}deg` }] },
+                  ]}
                 >
                   E
                 </Text>
               </View>
               <View style={[styles.cardinalDown]}>
                 <Text
-                  style={[styles.cardinalText, { transform: rotateBearing }]}
+                  style={[
+                    styles.cardinalText,
+                    { transform: [{ rotate: `${bearing}deg` }] },
+                  ]}
                 >
                   S
                 </Text>
@@ -95,13 +131,16 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
 
             <View
               // style={[styles.cardinalGrid, styles.cardinalsSecondary]}
-              style={[styles.cardinalGrid, { transform: "rotate(-45deg)" }]}
+              style={[
+                styles.cardinalGrid,
+                { transform: [{ rotate: "-45deg" }] },
+              ]}
             >
               <View style={[styles.cardinalTop]}>
                 <Text
                   style={[
                     styles.cardinalTextSecondary,
-                    { transform: rotateBearing45 },
+                    { transform: [{ rotate: `${bearing + 45}deg` }] },
                   ]}
                 >
                   NO
@@ -112,7 +151,7 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                 <Text
                   style={[
                     styles.cardinalTextSecondary,
-                    { transform: rotateBearing45 },
+                    { transform: [{ rotate: `${bearing + 45}deg` }] },
                   ]}
                 >
                   SO
@@ -122,7 +161,7 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                 <Text
                   style={[
                     styles.cardinalTextSecondary,
-                    { transform: rotateBearing45 },
+                    { transform: [{ rotate: `${bearing + 45}deg` }] },
                   ]}
                 >
                   NE
@@ -132,7 +171,7 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                 <Text
                   style={[
                     styles.cardinalTextSecondary,
-                    { transform: rotateBearing45 },
+                    { transform: [{ rotate: `${bearing + 45}deg` }] },
                   ]}
                 >
                   SE
@@ -148,11 +187,15 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
             <View
               // style={styles.windArrow}
               // style={styles.map__overlay}
-              style={{
-                transform:
-                  // "rotate(" + windData.direction + "deg) translateY(-25%)",
-                  "rotate(" + windData.direction + "deg) translateY(-25px)",
-              }}
+              style={[
+                {
+                  transform: [
+                    { rotate: "" + windData.direction + "deg" },
+                    { translateY: -25 },
+                  ],
+                },
+                // "rotate(" + windData.direction + "deg) translateY(-25px)",
+              ]}
             >
               {/* <img src={windArrow} alt="wind-kite-arrow"></img>
               <Magnet
@@ -176,11 +219,16 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
               <View
                 // style={styles.wavesArrow}
                 // style={styles.map__overlay}
-                style={{
-                  transform:
-                    // "rotate(" + wavesData.direction + "deg) translateY(-25%)",
-                    "rotate(" + wavesData.direction + "deg) translateY(-25px)",
-                }}
+                style={[
+                  {
+                    transform: [
+                      { rotate: "" + wavesData.direction + "deg" },
+                      { translateY: -25 },
+                    ],
+                  },
+                  // "rotate(" + wavesData.direction + "deg) translateY(-25%)",
+                  // "rotate(" + wavesData.direction + "deg) translateY(-25px)",
+                ]}
               >
                 {/*
                 <img src={wavesArrow} alt="waves-kite-arrow"></img>
@@ -203,15 +251,48 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
             <View style={styles.mapContainer}>
               <View
                 style={{
-                  width: 300,
-                  height: 300,
+                  width: "100%",
+                  aspectRatio: 1,
+                  borderRadius: 10000,
+                  overflow: "hidden",
                 }}
-              ></View>
-              {/* <Map
-                coordinates={location.coordinates}
-                style={{ transform: rotateBearing }}
-                onRotate={setBearing}
-              /> */}
+              >
+                <MapView
+                  provider={PROVIDER_GOOGLE}
+                  ref={mapViewRef}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    transform: [{ rotate: `${bearing}deg` }],
+                  }}
+                  camera={mapCamera}
+                  showsCompass={false}
+                  scrollDuringRotateOrZoomEnabled={true}
+                  scrollEnabled={true}
+                  zoomEnabled={true}
+                  onRegionChangeComplete={(region, details) => {
+                    mapViewRef?.current?.getCamera()?.then((info) => {
+                      // console.log("info", info);
+                      setMapCamera({
+                        ...info,
+                        center: {
+                          longitude: location.coordinates.longitude,
+                          latitude: location.coordinates.latitude,
+                          // hack to force update...
+                          zz: new Date().getMilliseconds(),
+                        },
+                        // mapCamera.center
+                      });
+                    });
+                  }}
+                  onRegionChange={() => {
+                    mapViewRef?.current?.getCamera()?.then((info) => {
+                      setBearing(info.heading);
+                      // console.log("info", info);
+                    });
+                  }}
+                />
+              </View>
             </View>
           </View>
         </View>
