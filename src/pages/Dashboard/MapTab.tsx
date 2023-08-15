@@ -19,11 +19,10 @@ import { angleToCardinal, clamp } from "../../utils";
 import { Svg, SvgUri } from "react-native-svg";
 // import { DataColumn } from "~components/molecules/DataColumn";
 
-// import { Map } from "~/components/atoms/Map";
-// import { Magnet } from "~/components/atoms/Magnet";
+import { Magnet } from "~/components/atoms/Magnet";
 
-// import WindArrow from "../../../assets/icons/wind-kite-arrow.svg";
-// import WavesArrow from "../../../assets/icons/waves-kite-arrow.svg";
+import WindArrow from "../../../assets/icons/wind-kite-arrow.svg";
+import WavesArrow from "../../../assets/icons/waves-kite-arrow.svg";
 
 export interface Props {
   location: Location | null;
@@ -178,76 +177,6 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                 </Text>
               </View>
             </View>
-
-            <View
-            // style={styles.compassTicks}
-            // style={styles.map__overlay}
-            ></View>
-
-            <View
-              // style={styles.windArrow}
-              // style={styles.map__overlay}
-              style={[
-                {
-                  transform: [
-                    { rotate: "" + windData.direction + "deg" },
-                    { translateY: -25 },
-                  ],
-                },
-                // "rotate(" + windData.direction + "deg) translateY(-25px)",
-              ]}
-            >
-              {/* <img src={windArrow} alt="wind-kite-arrow"></img>
-              <Magnet
-                color="primary"
-                style={{
-                  gridArea: "1 / 1 / 2 / 2",
-                  transform:
-                    "rotate(" +
-                    (bearing - windData.direction) +
-                    "deg) translateY(" +
-                    (invertTags() ? "-" : "") +
-                    "4em)",
-                }}
-              >
-                Wind {windData.speed.toFixed(0)} kts
-              </Magnet> */}
-            </View>
-            {!wavesData ? (
-              ""
-            ) : (
-              <View
-                // style={styles.wavesArrow}
-                // style={styles.map__overlay}
-                style={[
-                  {
-                    transform: [
-                      { rotate: "" + wavesData.direction + "deg" },
-                      { translateY: -25 },
-                    ],
-                  },
-                  // "rotate(" + wavesData.direction + "deg) translateY(-25%)",
-                  // "rotate(" + wavesData.direction + "deg) translateY(-25px)",
-                ]}
-              >
-                {/*
-                <img src={wavesArrow} alt="waves-kite-arrow"></img>
-                <Magnet
-                  color="secondary"
-                  style={{
-                    gridArea: "1 / 1 / 2 / 2",
-                    transform:
-                      "rotate(" +
-                      (bearing - wavesData.direction) +
-                      "deg) translateY(" +
-                      (invertTags() ? "" : "-") +
-                      "4em)",
-                  }}
-                >
-                  Waves {wavesData.height.toFixed(1)} m
-                </Magnet> */}
-              </View>
-            )}
             <View style={styles.mapContainer}>
               <View
                 style={{
@@ -294,6 +223,73 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                 />
               </View>
             </View>
+
+            <View
+            // style={styles.compassTicks}
+            // style={styles.map__overlay}
+            ></View>
+
+            <View
+              pointerEvents={"none"}
+              style={[
+                styles.arrowHolder,
+                {
+                  transform: [
+                    { rotate: "" + windData.direction + "deg" },
+                    { translateY: -100 },
+                  ],
+                },
+              ]}
+            >
+              <WindArrow />
+              {/*<Magnet
+                color="primary"
+                style={{
+                  gridArea: "1 / 1 / 2 / 2",
+                  transform:
+                    "rotate(" +
+                    (bearing - windData.direction) +
+                    "deg) translateY(" +
+                    (invertTags() ? "-" : "") +
+                    "4em)",
+                }}
+              >
+                Wind {windData.speed.toFixed(0)} kts
+              </Magnet> */}
+            </View>
+            {!wavesData ? (
+              ""
+            ) : (
+              <View
+                pointerEvents={"none"}
+                style={[
+                  styles.arrowHolder,
+                  {
+                    transform: [
+                      { rotate: "" + wavesData.direction + "deg" },
+                      { translateY: -100 },
+                    ],
+                  },
+                ]}
+              >
+                <WavesArrow />
+                {/*
+                <Magnet
+                  color="secondary"
+                  style={{
+                    gridArea: "1 / 1 / 2 / 2",
+                    transform:
+                      "rotate(" +
+                      (bearing - wavesData.direction) +
+                      "deg) translateY(" +
+                      (invertTags() ? "" : "-") +
+                      "4em)",
+                  }}
+                >
+                  Waves {wavesData.height.toFixed(1)} m
+                </Magnet> */}
+              </View>
+            )}
           </View>
         </View>
       )}
@@ -304,6 +300,7 @@ const styles = StyleSheet.create({
   tab: {
     ...(theme.cardPrimary as ViewStyle),
     ...(theme.flexUtil as ViewStyle),
+    paddingHorizontal: 0,
     paddingBottom: 0, // cf media query from original scss
     paddingTop: 56, // cf media query from original scss
   },
@@ -359,7 +356,7 @@ const styles = StyleSheet.create({
 
   cardinalText: {
     fontSize: 24,
-    fontWeight: "600",
+    fontFamily: "poppinsRegular",
     // margin: 1.6,
     // width: 16,
     // height: 16,
@@ -371,7 +368,7 @@ const styles = StyleSheet.create({
   },
   cardinalTextSecondary: {
     fontSize: 16,
-    fontWeight: "300",
+    fontFamily: "poppinsLight",
     // margin: 1.6,
     // width: 16,
     // height: 16,
@@ -409,6 +406,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
   },
+  arrowHolder: {
+    // text-shadow: 0 0 0.2em #ffffff, 0 0 0.2em #ffffff;
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    paddingLeft: 2,
+    paddingRight: 2,
+    // backgroundColor: "rgba(0,0,255,.1)",
+    top: 0,
+    left: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   mapContainer: {
     padding: 28,
   },

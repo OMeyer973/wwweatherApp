@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   },
   input: {
     // ...padding(2.4, 12, 2.4, 30),
+    fontFamily: "poppinsRegular",
     paddingVertical: 4,
     paddingHorizontal: 12,
     flexGrow: 1,

@@ -110,7 +110,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
             <Text
               style={{
                 paddingBottom: 8,
-                fontWeight: "900",
+                fontFamily: "poppinsSemiBold",
                 fontSize: 24,
               }}
             >
@@ -146,11 +146,34 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
                   }}
                 >
                   <Text style={{ flexShrink: 1 }}>
-                    <Text style={{ fontWeight: "bold" }}>{feature.name}</Text>
+                    <Text
+                      style={{
+                        fontFamily: "poppinsSemiBold",
+                        // letterSpacing: -0.2,
+                      }}
+                    >
+                      {feature.name}
+                    </Text>
                     {feature.region && (
-                      <Text style={{ color: "grey" }}>{", "}</Text>
+                      <Text
+                        style={{
+                          color: "grey",
+                          fontFamily: "poppinsRegular",
+                          // letterSpacing: -0.2,
+                        }}
+                      >
+                        {", "}
+                      </Text>
                     )}
-                    <Text style={{ color: "grey" }}>{feature.region}</Text>
+                    <Text
+                      style={{
+                        color: "grey",
+                        fontFamily: "poppinsRegular",
+                        letterSpacing: -0.2,
+                      }}
+                    >
+                      {feature.region}
+                    </Text>
                   </Text>
                   <TouchableOpacity
                     style={{
@@ -194,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: 48,
     textAlign: "right",
     fontSize: 64,
-    fontWeight: "900",
+    fontFamily: "poppinsSemiBold",
     lineHeight: 64,
   },
   subTitle: {

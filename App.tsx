@@ -5,6 +5,7 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 import HomePage from "./src/pages/HomePage";
 import Dashboard from "./src/pages/DashBoard";
 import { Location } from "./src/types";
+import { useFonts } from "expo-font";
 
 export default function App() {
   const windowWidth = Dimensions.get("window").width;
@@ -26,6 +27,16 @@ export default function App() {
     console.log(location);
   }, [location]);
 
+  const [loaded] = useFonts({
+    poppinsBlack: require("./assets/fonts/Poppins-Black.ttf"),
+    poppinsSemiBold: require("./assets/fonts/Poppins-SemiBold.ttf"),
+    poppinsRegular: require("./assets/fonts/Poppins-Regular.ttf"),
+    poppinsLight: require("./assets/fonts/Poppins-Light.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
   return (
     <LinearGradient
       colors={["rgba(0, 211, 255, 0.3)", "rgba(255, 63, 0, 0.3)"]}

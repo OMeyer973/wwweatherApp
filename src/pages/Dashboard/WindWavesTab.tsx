@@ -45,7 +45,7 @@ const WindWavesTab: React.FC<Props> = ({ wavesData, windData }) => {
           <Text style={theme.label}>Direction</Text>
           <Text style={theme.value}>
             {angleToCardinal(windData?.direction) +
-              " / " +
+              "/" +
               windData?.direction.toFixed(0) +
               "°"}
           </Text>
@@ -75,7 +75,7 @@ const WindWavesTab: React.FC<Props> = ({ wavesData, windData }) => {
           <Text style={theme.label}>Direction</Text>
           <Text style={theme.value}>
             {angleToCardinal(wavesData?.direction) +
-              " / " +
+              "/" +
               wavesData?.direction.toFixed(0) +
               "°"}
           </Text>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     // width: "100%",
   },
   title: {
-    fontSize: 24,
+    ...theme.title,
   },
   dataRow: { ...theme.flexUtil, marginBottom: 16, flexWrap: "wrap" },
 });

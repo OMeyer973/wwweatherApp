@@ -20,8 +20,8 @@ const tabColorSecondary = "rgba(255, 255, 255, 0.8)";
 const buttonPrimary = StyleSheet.create({
   backgroundColor: buttonBgColor,
   text: {
+    fontFamily: "poppinsSemiBold",
     color: "#ffffff",
-    fontWeight: "900",
   }
 });
 
@@ -32,7 +32,7 @@ const buttonSecondary = StyleSheet.create({
 
 const cardPrimary = StyleSheet.create({
   backgroundColor: tabColor,
-  paddingHorizontal: 26,
+  paddingHorizontal: 24,
   paddingVertical: 24,
 });
 
@@ -46,32 +46,59 @@ const cardTransparent = StyleSheet.create({
   backgroundColor: null
 });
 
+const magnet = StyleSheet.create({
+  margin: "auto",
+  // todo
+  //   padding: 0.25em 0.5em;
+  //   border - radius: 1em;
+  // box - shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+});
+
+const magnetPrimary = StyleSheet.create({
+  // todo
+  // color: $buttonColor;
+  // background: $buttonBgColor;
+});
+
+const magnetSecondary = StyleSheet.create({
+  // todo
+  // color: $buttonColor;
+  // background: $buttonBgColorSecondary;
+});
+
+
 // 
 export const theme = {
   title: {
+    fontFamily: "poppinsRegular",
     color: titleColor,
-    // Font: ""Poppins", sans- serif",
+    fontSize: 24,
   },
 
   label: {
+    fontFamily: "poppinsRegular",
+    fontSize: 16,
     color: labelColor,
   },
 
   value: {
+    fontFamily: "poppinsSemiBold",
+    // letterSpacing: -0.2,
     color: labelColor,
     fontSize: 24,
-    fontWeight: "600",
   },
   valueSmall: {
+    fontFamily: "poppinsSemiBold",
     color: labelColor,
-    fontWeight: "600",
   },
   valueSlim: {
+    fontFamily: "poppinsRegular",
     color: labelColor,
   },
   valueTitle: {
+    fontFamily: "poppinsSemiBold",
+    // letterSpacing: -0.1,
     fontSize: 24,
-    fontWeight: "600",
     color: titleColor,
   },
 
@@ -97,6 +124,8 @@ export const theme = {
   cardPrimary,
   cardSecondary,
   cardTransparent,
+  magnetPrimary,
+  magnetSecondary,
 
   labelBgColor,
 };
