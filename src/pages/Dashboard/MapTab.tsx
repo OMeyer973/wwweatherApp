@@ -8,6 +8,8 @@ import {
   Dimensions,
   RotateTransform,
 } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import { s, vs, ms, mvs } from "react-native-size-matters";
 
 import Value from "../../components/Value";
 import { theme } from "../../theme.js";
@@ -19,7 +21,7 @@ import { angleToCardinal, clamp } from "../../utils";
 import { Svg, SvgUri } from "react-native-svg";
 // import { DataColumn } from "~components/molecules/DataColumn";
 
-import { Magnet } from "~/components/atoms/Magnet";
+// import { Magnet } from "~/components/atoms/Magnet";
 
 import WindArrow from "../../../assets/icons/wind-kite-arrow.svg";
 import WavesArrow from "../../../assets/icons/waves-kite-arrow.svg";
@@ -236,26 +238,25 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                 {
                   transform: [
                     { rotate: "" + windData.direction + "deg" },
-                    { translateY: -100 },
+                    { translateY: -55 },
                   ],
                 },
               ]}
             >
-              <WindArrow />
-              {/*<Magnet
-                color="primary"
+              <WindArrow height={s(52)} width={s(52)} />
+              <View
                 style={{
-                  gridArea: "1 / 1 / 2 / 2",
-                  transform:
-                    "rotate(" +
-                    (bearing - windData.direction) +
-                    "deg) translateY(" +
-                    (invertTags() ? "-" : "") +
-                    "4em)",
+                  transform: [
+                    { translateY: -40 },
+                    { rotate: "" + (bearing - windData.direction) + "deg" },
+                    { translateY: invertTags() ? -45 : 45 },
+                  ],
                 }}
               >
-                Wind {windData.speed.toFixed(0)} kts
-              </Magnet> */}
+                <Text style={{ ...theme.magnetPrimary }}>
+                  Wind {windData.speed.toFixed(0)} kts
+                </Text>
+              </View>
             </View>
             {!wavesData ? (
               ""
@@ -267,27 +268,25 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                   {
                     transform: [
                       { rotate: "" + wavesData.direction + "deg" },
-                      { translateY: -100 },
+                      { translateY: -55 },
                     ],
                   },
                 ]}
               >
-                <WavesArrow />
-                {/*
-                <Magnet
-                  color="secondary"
+                <WavesArrow height={s(52)} width={s(52)} />
+                <View
                   style={{
-                    gridArea: "1 / 1 / 2 / 2",
-                    transform:
-                      "rotate(" +
-                      (bearing - wavesData.direction) +
-                      "deg) translateY(" +
-                      (invertTags() ? "" : "-") +
-                      "4em)",
+                    transform: [
+                      { translateY: -40 },
+                      { rotate: "" + (bearing - wavesData.direction) + "deg" },
+                      { translateY: invertTags() ? 45 : -45 },
+                    ],
                   }}
                 >
-                  Waves {wavesData.height.toFixed(1)} m
-                </Magnet> */}
+                  <Text style={{ ...theme.magnetSecondary }}>
+                    Waves {wavesData.height.toFixed(0)} kts
+                  </Text>
+                </View>
               </View>
             )}
           </View>
@@ -296,13 +295,13 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   tab: {
     ...(theme.cardPrimary as ViewStyle),
     ...(theme.flexUtil as ViewStyle),
     paddingHorizontal: 0,
     paddingBottom: 0, // cf media query from original scss
-    paddingTop: 56, // cf media query from original scss
+    paddingTop: s(56), // cf media query from original scss
   },
   compassHolder: {
     position: "relative",
@@ -312,7 +311,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     width: "100%",
     borderRadius: 1000,
-    padding: 3.2,
+    // padding: s(3.2),
     backgroundColor: theme.labelBgColor,
     // background: linear-gradient(
     //   24deg,
@@ -342,8 +341,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    paddingLeft: 2,
-    paddingRight: 2,
+    padding: s(1),
+    // paddingRight: s(2),
     // backgroundColor: "rgba(0,0,255,.1)",
     top: 0,
     left: 0,
@@ -355,26 +354,26 @@ const styles = StyleSheet.create({
   },
 
   cardinalText: {
-    fontSize: 24,
     fontFamily: "poppinsRegular",
-    // margin: 1.6,
-    // width: 16,
-    // height: 16,
+    fontSize: s(20),
+    lineHeight: s(25),
+    width: s(24),
+    height: s(24),
+    textAlign: "center",
+    verticalAlign: "middle",
     borderRadius: 1000,
-
-    lineHeight: 30,
 
     /* background-color: pink; */
   },
   cardinalTextSecondary: {
-    fontSize: 16,
     fontFamily: "poppinsLight",
-    // margin: 1.6,
-    // width: 16,
-    // height: 16,
+    fontSize: s(14),
+    lineHeight: s(25),
+    width: s(24),
+    height: s(24),
+    textAlign: "center",
+    verticalAlign: "middle",
     borderRadius: 1000,
-
-    // lineHeight: 15.2,
 
     /* background-color: pink; */
   } as TextStyle,
@@ -411,8 +410,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    paddingLeft: 2,
-    paddingRight: 2,
+    paddingLeft: s(2),
+    paddingRight: s(2),
     // backgroundColor: "rgba(0,0,255,.1)",
     top: 0,
     left: 0,
@@ -422,7 +421,7 @@ const styles = StyleSheet.create({
   },
 
   mapContainer: {
-    padding: 28,
+    padding: s(24),
   },
 });
 export default MapTab;

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 import SearchBar from "../components/SearchBar";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
 
@@ -169,6 +170,7 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
         <LocationTab
           location={location ? location.name : ""}
           country={location ? location.region : ""}
+          setLocation={setLocation}
         />
         {/* <TimeTab
           // time={predictions[currentPredictionId].time}
@@ -225,7 +227,7 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   dashboard: {
     marginTop: statusBarHeight,
     // height: "100%",

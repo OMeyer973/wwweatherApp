@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 
 import Value from "../../components/Value";
 import { theme } from "../../theme.js";
@@ -101,7 +102,7 @@ const WeatherTab: React.FC<Props> = ({ weatherData }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   tab: { ...theme.flexUtil },
   weatherData: {
     alignItems: "center",

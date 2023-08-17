@@ -8,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 import SearchBar from "../components/SearchBar";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
 import { theme } from "../theme";
@@ -17,6 +18,7 @@ import { useState } from "react";
 import RightArrowIcon from "../../assets/icons/UI/RightArrowIcon";
 import { SearchQuery } from "../types";
 import { statusBarHeight } from "../constants";
+import { s, vs, ms, mvs } from "react-native-size-matters";
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -79,14 +81,10 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
   return (
     // <ScrollView >
     <View style={styles.home}>
-      <View style={styles.title}>
-        <Text style={styles.title}>
-          Wind
-          {"\n"}
-          Waves
-          {"\n"}
-          Weather
-        </Text>
+      <View style={{ paddingTop: s(120) }}>
+        <Text style={styles.title}>Wind</Text>
+        <Text style={styles.title}>Waves</Text>
+        <Text style={{ ...styles.title, marginBottom: -10 }}>Weather</Text>
         <Text style={styles.subTitle}>get forecast quick, go ride now!</Text>
       </View>
 
@@ -107,18 +105,10 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
           style={{ ...styles.container, height: isSearchUp ? "100%" : "auto" }}
         >
           {isSearchUp && (
-            <Text
-              style={{
-                paddingBottom: 8,
-                fontFamily: "poppinsSemiBold",
-                fontSize: 24,
-              }}
-            >
-              Wind waves weather
-            </Text>
+            <Text style={theme.valueTitle}>Wind waves weather</Text>
           )}
 
-          <Text style={{ paddingBottom: 8 }}>Find a spot</Text>
+          <Text style={theme.label}>Find a spot</Text>
           <SearchBar
             onSearch={onSearch}
             onClear={onClear}
@@ -206,7 +196,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   home: {
     alignItems: "center",
     maxWidth: 448,
@@ -214,11 +204,11 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   title: {
-    marginTop: 48,
-    textAlign: "right",
     fontSize: 64,
-    fontFamily: "poppinsSemiBold",
-    lineHeight: 64,
+    lineHeight: 80,
+    marginBottom: -20,
+    textAlign: "right",
+    fontFamily: "poppinsBold",
   },
   subTitle: {
     fontSize: 16,

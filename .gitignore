@@ -12,3 +12,6 @@ web-build/
 
 # macOS
 .DS_Store
+
+# this file is important but contains api keys, not push for now
+app.json

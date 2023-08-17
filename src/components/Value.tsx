@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 import CSS, { Property } from "csstype";
 
 import { theme } from "../theme";
@@ -22,7 +23,7 @@ Value.defaultProps = {
   flavor: "default",
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   default: {
     fontSize: 24,
     fontWeight: "600",

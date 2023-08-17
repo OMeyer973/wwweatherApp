@@ -13,6 +13,9 @@ import { padding } from "../utils";
 import SearchIcon from "../../assets/icons/UI/SearchIcon";
 import { useRef, useState } from "react";
 import CloseIcon from "../../assets/icons/UI/CloseIcon";
+import { ScaledSheet } from "react-native-size-matters";
+import { s, vs, ms, mvs } from "react-native-size-matters";
+
 // import { useKeyboardVisible } from '../hooks/useKeyboardVisible';
 
 const SearchBar = ({ onSearch, onClear, ...props }) => {
@@ -69,31 +72,31 @@ const SearchBar = ({ onSearch, onClear, ...props }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   searchBar: {
     ...theme.input,
-    marginHorizontal: -12,
+    marginHorizontal: s(-12),
     flexDirection: "row",
-    borderRadius: 16,
+    borderRadius: s(16),
   },
   input: {
     // ...padding(2.4, 12, 2.4, 30),
     fontFamily: "poppinsRegular",
-    paddingVertical: 4,
-    paddingHorizontal: 12,
+    paddingVertical: s(4),
+    paddingHorizontal: s(12),
     flexGrow: 1,
-    marginRight: 4,
+    marginRight: s(4),
   },
   searchButton: {
     // borderRadius: 0,
-    padding: 10,
-    margin: -5,
-    borderRadius: 24,
+    padding: s(10),
+    margin: s(-5),
+    borderRadius: s(24),
     marginRight: 0,
     active: {
       ...theme.buttonPrimary,
-      margin: -6,
-      padding: 12,
+      margin: s(-6),
+      padding: s(12),
     },
   },
 });

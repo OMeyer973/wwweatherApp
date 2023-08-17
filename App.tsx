@@ -6,6 +6,7 @@ import HomePage from "./src/pages/HomePage";
 import Dashboard from "./src/pages/DashBoard";
 import { Location } from "./src/types";
 import { useFonts } from "expo-font";
+import { ScaledSheet } from "react-native-size-matters";
 
 export default function App() {
   const windowWidth = Dimensions.get("window").width;
@@ -28,7 +29,7 @@ export default function App() {
   }, [location]);
 
   const [loaded] = useFonts({
-    poppinsBlack: require("./assets/fonts/Poppins-Black.ttf"),
+    poppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
     poppinsSemiBold: require("./assets/fonts/Poppins-SemiBold.ttf"),
     poppinsRegular: require("./assets/fonts/Poppins-Regular.ttf"),
     poppinsLight: require("./assets/fonts/Poppins-Light.ttf"),
@@ -54,7 +55,7 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   body: {
     flex: 1,
     // alignItems: 'center',

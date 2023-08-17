@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewStyle, Dimensions } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import { s, vs, ms, mvs } from "react-native-size-matters";
 
 import Value from "../../components/Value";
 import { theme } from "../../theme.js";
@@ -85,7 +87,7 @@ const WindWavesTab: React.FC<Props> = ({ wavesData, windData }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     ...theme.flexUtil,
     width: "100%",
@@ -93,6 +95,8 @@ const styles = StyleSheet.create({
   },
   tab: {
     ...(theme.cardSecondary as ViewStyle),
+    paddingTop: s(36),
+    paddingHorizontal: s(18),
     flexGrow: 1,
     flexShrink: 1,
   },

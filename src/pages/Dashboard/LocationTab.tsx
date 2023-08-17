@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import CloseIcon from "../../../assets/icons/UI/CloseIcon";
 
 import Value from "../../components/Value";
 import { theme } from "../../theme";
@@ -28,17 +30,47 @@ import { clamp } from "../../utils";
 export interface Props {
   location: string;
   country: string;
+  setLocation;
 }
 
-const LocationTab: React.FC<Props> = ({ location, country }) => {
+const LocationTab: React.FC<Props> = ({ location, country, setLocation }) => {
+  const onClose = () => {
+    return setLocation(null);
+  };
+
   return (
-    <View>
-      <View style={theme.cardPrimary}>
-        <Text style={theme.valueTitle}>{location}</Text>
-        <Text style={theme.valueSlim}>{country}</Text>
+    <View style={theme.cardPrimary}>
+      <View style={styles.tab}>
+        <View style={{ flexShrink: 1 }}>
+          <Text style={theme.valueTitle}>{location}</Text>
+          <Text style={theme.valueSlim}>{country}</Text>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={() => onClose()}
+          >
+            <CloseIcon />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
 
+const styles = ScaledSheet.create({
+  tab: { ...theme.flexUtil, alignItems: "flex-start" },
+  weatherData: {
+    alignItems: "center",
+    maxWidth: 448,
+    // width: "100%",
+    // height: "100%",
+  },
+  searchButton: {
+    // from HomePage.jsx
+    padding: 10,
+    margin: -10,
+    borderRadius: 24,
+  },
+});
 export default LocationTab;

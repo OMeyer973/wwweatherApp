@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import { s, vs, ms, mvs } from 'react-native-size-matters';
 
 // constants
 const titleColor = "#262626";
@@ -17,7 +19,7 @@ const tabColor = "#fff";
 const tabColorSecondary = "rgba(255, 255, 255, 0.8)";
 
 // theme
-const buttonPrimary = StyleSheet.create({
+const buttonPrimary = ScaledSheet.create({
   backgroundColor: buttonBgColor,
   text: {
     fontFamily: "poppinsSemiBold",
@@ -25,45 +27,59 @@ const buttonPrimary = StyleSheet.create({
   }
 });
 
-const buttonSecondary = StyleSheet.create({
+const buttonSecondary = ScaledSheet.create({
   ...buttonPrimary,
   backgroundColor: buttonBgColorSecondary
 });
 
-const cardPrimary = StyleSheet.create({
+const cardPrimary = ScaledSheet.create({
   backgroundColor: tabColor,
-  paddingHorizontal: 24,
-  paddingVertical: 24,
+  paddingHorizontal: s(24),
+  paddingVertical: s(24),
 });
 
-const cardSecondary = StyleSheet.create({
+const cardSecondary = ScaledSheet.create({
   ...cardPrimary,
   backgroundColor: tabColorSecondary
 });
 
-const cardTransparent = StyleSheet.create({
+const cardTransparent = ScaledSheet.create({
   ...cardPrimary,
   backgroundColor: null
 });
 
-const magnet = StyleSheet.create({
+const magnet = ScaledSheet.create({
   margin: "auto",
+  fontFamily: "poppinsRegular",
+  fontSize: s(14),
+  paddingTop: s(3),
+  paddingHorizontal: s(8),
+  borderRadius: 1000,
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
+
   // todo
   //   padding: 0.25em 0.5em;
   //   border - radius: 1em;
   // box - shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
 });
 
-const magnetPrimary = StyleSheet.create({
-  // todo
-  // color: $buttonColor;
-  // background: $buttonBgColor;
+const magnetPrimary = ScaledSheet.create({
+  ...magnet,
+  color: buttonColor,
+  backgroundColor: buttonBgColor,
 });
 
-const magnetSecondary = StyleSheet.create({
-  // todo
-  // color: $buttonColor;
-  // background: $buttonBgColorSecondary;
+const magnetSecondary = ScaledSheet.create({
+  ...magnet,
+  color: buttonColor,
+  backgroundColor: buttonBgColorSecondary,
 });
 
 
@@ -72,20 +88,21 @@ export const theme = {
   title: {
     fontFamily: "poppinsRegular",
     color: titleColor,
-    fontSize: 24,
+    fontSize: s(20),
   },
 
   label: {
     fontFamily: "poppinsRegular",
-    fontSize: 16,
+    fontSize: s(14),
     color: labelColor,
+    marginBottom: s(8),
   },
 
   value: {
     fontFamily: "poppinsSemiBold",
     // letterSpacing: -0.2,
     color: labelColor,
-    fontSize: 24,
+    fontSize: s(20),
   },
   valueSmall: {
     fontFamily: "poppinsSemiBold",
@@ -94,11 +111,12 @@ export const theme = {
   valueSlim: {
     fontFamily: "poppinsRegular",
     color: labelColor,
+
   },
   valueTitle: {
     fontFamily: "poppinsSemiBold",
     // letterSpacing: -0.1,
-    fontSize: 24,
+    fontSize: s(20),
     color: titleColor,
   },
 
