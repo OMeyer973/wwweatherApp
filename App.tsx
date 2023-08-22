@@ -17,7 +17,12 @@ export default function App() {
   //   name: "Kourou",
   //   region: "French Guiana",
   // });
-  const [location, setLocation] = useState<Location | null>(null);
+  const [location, setLocation] = useState<Location | null>({
+    coordinates: { latitude: 5.15812, longitude: -52.64263 },
+    name: "Kourou",
+    region: "French Guiana",
+  });
+  // const [location, setLocation] = useState<Location | null>(null);
 
   useEffect(() => {
     if (location?.name) {

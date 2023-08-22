@@ -30,7 +30,7 @@ export interface Props {
 const HomePage: React.FC<Props> = ({ setLocation }) => {
   const onSearch = async (searchString: String) => {
     setSearchQuery({ ...searchQuery, query: [searchString] });
-    console.log("searchString", searchString);
+    console.log("searchString ", searchString);
     if (
       !searchString ||
       searchString == "" ||
@@ -84,7 +84,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
       <View style={{ paddingTop: s(120) }}>
         <Text style={styles.title}>Wind</Text>
         <Text style={styles.title}>Waves</Text>
-        <Text style={{ ...styles.title, marginBottom: -10 }}>Weather</Text>
+        <Text style={{ ...styles.title, marginBottom: s(-10) }}>Weather</Text>
         <Text style={styles.subTitle}>get forecast quick, go ride now!</Text>
       </View>
 
@@ -117,16 +117,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
 
           {searchQuery?.features?.map((feature, key) => (
             <View key={key}>
-              <View
-                style={{
-                  ...theme.input,
-                  marginHorizontal: -12,
-                  paddingHorizontal: 12,
-                  borderRadius: 16,
-                  paddingVertical: 12,
-                  marginTop: 8,
-                }}
-              >
+              <View style={styles.searchResult}>
                 <View
                   style={{
                     ...theme.flexUtil,
@@ -159,7 +150,7 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
                       style={{
                         color: "grey",
                         fontFamily: "poppinsRegular",
-                        letterSpacing: -0.2,
+                        // letterSpacing: -0.2,
                       }}
                     >
                       {feature.region}
@@ -199,28 +190,36 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
 const styles = ScaledSheet.create({
   home: {
     alignItems: "center",
-    maxWidth: 448,
+    maxWidth: s(448),
     width: "100%",
     height: "100%",
   },
   title: {
-    fontSize: 64,
-    lineHeight: 80,
-    marginBottom: -20,
+    fontSize: s(64),
+    lineHeight: s(80),
+    marginBottom: s(-20),
     textAlign: "right",
     fontFamily: "poppinsBold",
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: s(16),
     textAlign: "right",
-    marginBottom: 48,
+    marginBottom: s(48),
   },
   container: {
     ...theme.cardPrimary,
-    borderRadius: 24,
+    borderRadius: s(24),
+  } as ViewStyle,
+  searchResult: {
+    ...theme.input,
+    marginHorizontal: s(-12),
+    paddingHorizontal: s(12),
+    borderRadius: s(16),
+    paddingVertical: s(12),
+    marginTop: s(8),
   } as ViewStyle,
   credits: {
-    marginTop: 48,
+    marginTop: s(48),
   },
 });
 

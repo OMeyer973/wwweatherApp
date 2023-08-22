@@ -20,7 +20,7 @@ export interface Props {
 
 const WindWavesTab: React.FC<Props> = ({ wavesData, windData }) => {
   const windowWidth = Dimensions.get("window").width;
-  console.log(windowWidth);
+  // console.log(windowWidth);
   return (
     <View style={styles.container}>
       <View style={styles.tab}>

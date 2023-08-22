@@ -30,25 +30,30 @@ import LocationTab from "./Dashboard/LocationTab";
 import WeatherTab from "./Dashboard/WeatherTab";
 import WindWavesTab from "./Dashboard/WindWavesTab";
 import { MapTab } from "./Dashboard/MapTab";
+import TimeTab from "./Dashboard/TimeTab";
 
 // start yesterday at midnight (local time)
 
 const placeholderWeatherPredictionsByHour: WWWData[] = [placeholderWWWData];
 
 const weatherKeys = [
-  // "8ea1e1a8-ae72-11eb-849d-0242ac130002-8ea1e248-ae72-11eb-849d-0242ac130002",
-  "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
-
-  // "66b43972-ae8e-11eb-8d12-0242ac130002-66b439ea-ae8e-11eb-8d12-0242ac130002",
-  // "2c7517f8-ae8f-11eb-9f40-0242ac130002-2c7518fc-ae8f-11eb-9f40-0242ac130002",
-  // "025354a6-b1e3-11eb-9f40-0242ac130002-0253551e-b1e3-11eb-9f40-0242ac130002",
-  // "941a0b2a-b1e6-11eb-8d12-0242ac130002-941a0ba2-b1e6-11eb-8d12-0242ac130002",
-  // "0b3a1686-b1f2-11eb-849d-0242ac130002-0b3a16fe-b1f2-11eb-849d-0242ac130002",
-  // "bfd056a6-b1f6-11eb-8d12-0242ac130002-bfd0571e-b1f6-11eb-8d12-0242ac130002",
-  // "5393b808-b1fa-11eb-8d12-0242ac130002-5393b880-b1fa-11eb-8d12-0242ac130002",
-  // "3ebcf5e6-b1fc-11eb-80d0-0242ac130002-3ebcf65e-b1fc-11eb-80d0-0242ac130002",
-  // "c85bc6b4-b2a7-11eb-80d0-0242ac130002-c85bc72c-b2a7-11eb-80d0-0242ac130002",
-  // "03ccbf6e-b2ad-11eb-849d-0242ac130002-03ccbffa-b2ad-11eb-849d-0242ac130002",
+  // "a9a8d62a-409f-11ee-92e6-0242ac130002-a9a8d68e-409f-11ee-92e6-0242ac130002",
+  // "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
+  // "3ab4f248-40a0-11ee-a26f-0242ac130002-3ab4f2e8-40a0-11ee-a26f-0242ac130002",
+  // "5ccc86d8-40a1-11ee-a26f-0242ac130002-5ccc8746-40a1-11ee-a26f-0242ac130002",
+  // "8d4a9656-40a1-11ee-86b2-0242ac130002-8d4a96b0-40a1-11ee-86b2-0242ac130002",
+  // "a2fa695e-40a1-11ee-8b7f-0242ac130002-a2fa6a1c-40a1-11ee-8b7f-0242ac130002",
+  // "bd3fea3c-40a1-11ee-a654-0242ac130002-bd3feab4-40a1-11ee-a654-0242ac130002",
+  // "d009d7f4-40a1-11ee-a654-0242ac130002-d009d858-40a1-11ee-a654-0242ac130002",
+  // "e69317ce-40a1-11ee-86b2-0242ac130002-e693183c-40a1-11ee-86b2-0242ac130002",
+  // "f5c4d00c-40a1-11ee-8b7f-0242ac130002-f5c4d138-40a1-11ee-8b7f-0242ac130002",
+  // "05ce77f0-40a2-11ee-a26f-0242ac130002-05ce785e-40a2-11ee-a26f-0242ac130002",
+  // "160bfb06-40a2-11ee-86b2-0242ac130002-160bfb92-40a2-11ee-86b2-0242ac130002",
+  // "323dd358-40a2-11ee-a654-0242ac130002-323dd3c6-40a2-11ee-a654-0242ac130002",
+  // "4bffcb98-40a2-11ee-8d52-0242ac130002-4bffd07a-40a2-11ee-8d52-0242ac130002",
+  "72cf0040-40a2-11ee-a654-0242ac130002-72cf00a4-40a2-11ee-a654-0242ac130002",
+  // "85bcd394-40a2-11ee-a654-0242ac130002-85bcd416-40a2-11ee-a654-0242ac130002",
+  // "9de9655e-40a2-11ee-a26f-0242ac130002-9de965c2-40a2-11ee-a26f-0242ac130002",
 ];
 const fetchWeatherData = async (coordinates: Coordinates) => {
   const lat = coordinates.latitude;
@@ -62,7 +67,7 @@ const fetchWeatherData = async (coordinates: Coordinates) => {
       },
     }
   );
-  console.log(weatherKeys[Date.now() % weatherKeys.length]);
+
   const data = await res.json();
   return data;
 };
@@ -139,12 +144,10 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
   const [tideData, setTideData] = useState([]);
 
   useEffect(() => {
+    // console.log("Dashboard - useEffect [location]");
     if (location && location.coordinates) {
       getWeatherPredictions(location.coordinates).then(
         (newPredictions: WWWData[]) => {
-          if (newPredictions.hours === undefined) {
-            return;
-          }
           setWeatherPredictionsByHour(newPredictions);
           setCurrentHourId(
             newPredictions?.findIndex(
@@ -172,24 +175,33 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
           country={location ? location.region : ""}
           setLocation={setLocation}
         />
-        {/* <TimeTab
+        <TimeTab
           // time={predictions[currentPredictionId].time}
           currentHourId={currentHourId}
           astroData={astroData}
           tideData={tideData}
           weatherPredictionsByHour={weatherPredictionsByHour}
           onMinus3hours={() => {
-            console.log(currentHourId);
-            console.log(Math.max(0, currentHourId - 3));
+            // console.log(
+            //   "onMinus3hours " +
+            //     currentHourId +
+            //     " " +
+            //     Math.max(0, currentHourId - 3)
+            // );
             setCurrentHourId(Math.max(0, currentHourId - 3));
           }}
           onPlus3hours={() => {
-            console.log(currentHourId);
+            // console.log(
+            //   "onPlus3hours " +
+            //     currentHourId +
+            //     " " +
+            //     Math.min(0, currentHourId + 3)
+            // );
             setCurrentHourId(
               Math.min(weatherPredictionsByHour.length - 1, currentHourId + 3)
             );
           }}
-        />*/}
+        />
         <MapTab
           location={location}
           windData={weatherPredictionsByHour[currentHourId].windData}
