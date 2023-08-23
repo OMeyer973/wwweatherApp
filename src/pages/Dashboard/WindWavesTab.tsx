@@ -103,6 +103,7 @@ const styles = ScaledSheet.create({
   header: {
     ...theme.flexUtil,
     marginBottom: 40,
+    paddingRight: s(8),
     // width: "100%",
   },
   title: {

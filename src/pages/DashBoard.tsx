@@ -36,6 +36,22 @@ import TimeTab from "./Dashboard/TimeTab";
 
 const placeholderWeatherPredictionsByHour: WWWData[] = [placeholderWWWData];
 
+const makeDummyRawWeatherData = () => {
+  // correct the times of the dummy data
+  return {
+    ...dummyRawWeatherData,
+    hours: dummyRawWeatherData.hours.map((hour, id) => {
+      var time = new Date(new Date().getTime() - 1000 * 60 * 60 * 24);
+      time.setHours(0, 0, 0, 0);
+      time = new Date(time.getTime() + 1000 * 60 * 60 * id);
+      return {
+        ...hour,
+        time,
+      };
+    }),
+  };
+};
+
 const weatherKeys = [
   // "a9a8d62a-409f-11ee-92e6-0242ac130002-a9a8d68e-409f-11ee-92e6-0242ac130002",
   // "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
@@ -51,7 +67,7 @@ const weatherKeys = [
   // "160bfb06-40a2-11ee-86b2-0242ac130002-160bfb92-40a2-11ee-86b2-0242ac130002",
   // "323dd358-40a2-11ee-a654-0242ac130002-323dd3c6-40a2-11ee-a654-0242ac130002",
   // "4bffcb98-40a2-11ee-8d52-0242ac130002-4bffd07a-40a2-11ee-8d52-0242ac130002",
-  "72cf0040-40a2-11ee-a654-0242ac130002-72cf00a4-40a2-11ee-a654-0242ac130002",
+  // "72cf0040-40a2-11ee-a654-0242ac130002-72cf00a4-40a2-11ee-a654-0242ac130002",
   // "85bcd394-40a2-11ee-a654-0242ac130002-85bcd416-40a2-11ee-a654-0242ac130002",
   // "9de9655e-40a2-11ee-a26f-0242ac130002-9de965c2-40a2-11ee-a26f-0242ac130002",
 ];
@@ -81,11 +97,10 @@ const getWeatherPredictions: (coordinates: Coordinates) => any = async (
     console.error(
       "couldn't fetch data from weather api, fallback to dummy data"
     );
-    return;
   }
   const rawWeatherData =
     weatherFromServer.hours === undefined
-      ? dummyRawWeatherData
+      ? makeDummyRawWeatherData()
       : weatherFromServer;
 
   return rawWeatherData.hours.map((hour: any) => makeWWWData(hour));
@@ -204,28 +219,31 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
         />
         <MapTab
           location={location}
-          windData={weatherPredictionsByHour[currentHourId].windData}
-          wavesData={weatherPredictionsByHour[currentHourId].wavesData}
+          windData={
+            weatherPredictionsByHour &&
+            weatherPredictionsByHour[currentHourId]?.windData
+          }
+          wavesData={
+            weatherPredictionsByHour &&
+            weatherPredictionsByHour[currentHourId]?.wavesData
+          }
         />
         {/* {console.log("weatherPredictionsByHour", weatherPredictionsByHour)}
         {console.log("currentHourId", currentHourId)} */}
         <WeatherTab
           weatherData={
             weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId] &&
-            weatherPredictionsByHour[currentHourId].weatherData
+            weatherPredictionsByHour[currentHourId]?.weatherData
           }
         />
         <WindWavesTab
           windData={
             weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId] &&
-            weatherPredictionsByHour[currentHourId].windData
+            weatherPredictionsByHour[currentHourId]?.windData
           }
           wavesData={
             weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId] &&
-            weatherPredictionsByHour[currentHourId].wavesData
+            weatherPredictionsByHour[currentHourId]?.wavesData
           }
         />
 
