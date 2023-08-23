@@ -77,7 +77,6 @@ const styles = ScaledSheet.create({
     ...theme.input,
     marginHorizontal: s(-12),
     flexDirection: "row",
-    borderRadius: s(16),
   },
   input: {
     // ...padding(2.4, 12, 2.4, 30),
@@ -91,10 +90,10 @@ const styles = ScaledSheet.create({
     // borderRadius: 0,
     padding: s(10),
     margin: s(-5),
-    borderRadius: s(24),
+    borderRadius: s(28),
     marginRight: 0,
     active: {
-      ...theme.buttonPrimary,
+      backgroundColor: theme.buttonBgColor,
       margin: s(-6),
       padding: s(12),
     },

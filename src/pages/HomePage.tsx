@@ -160,9 +160,9 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
                     style={{
                       // borderRadius: 0,
                       // padding: 10,
-                      margin: -5,
-                      borderRadius: 24,
-                      marginLeft: 4,
+                      margin: s(-5),
+                      borderRadius: s(24),
+                      marginLeft: s(4),
                       marginRight: 0,
                     }}
                     onPress={() => setLocation(searchQuery?.features[key])}
@@ -214,7 +214,6 @@ const styles = ScaledSheet.create({
     ...theme.input,
     marginHorizontal: s(-12),
     paddingHorizontal: s(12),
-    borderRadius: s(16),
     paddingVertical: s(12),
     marginTop: s(8),
   } as ViewStyle,

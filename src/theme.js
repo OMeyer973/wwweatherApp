@@ -6,7 +6,7 @@ import { s, vs, ms, mvs } from 'react-native-size-matters';
 const titleColor = "#262626";
 // const titleFont = "Poppins", sans-serif; // todo
 
-const dataColor = "#000";
+const valueColor = "#000";
 
 const labelColor = "rgba(0, 0, 0, 0.7)";
 const labelBgColor = "#e3e7e8";
@@ -21,10 +21,13 @@ const tabColorSecondary = "rgba(255, 255, 255, 0.8)";
 // theme
 const buttonPrimary = ScaledSheet.create({
   backgroundColor: buttonBgColor,
-  text: {
-    fontFamily: "poppinsSemiBold",
-    color: "#ffffff",
-  }
+  fontFamily: "poppinsBold",
+  color: "#ffffff",
+  fontSize: s(14),
+  borderRadius: s(26),
+  paddingHorizontal: s(12),
+  paddingTop: s(8),
+  paddingBottom: s(6),
 });
 
 const buttonSecondary = ScaledSheet.create({
@@ -101,17 +104,18 @@ export const theme = {
   value: {
     fontFamily: "poppinsSemiBold",
     // letterSpacing: -0.2,
-    color: labelColor,
+    color: valueColor,
     fontSize: s(20),
   },
   valueSmall: {
     fontFamily: "poppinsSemiBold",
-    color: labelColor,
+    color: valueColor,
+    fontSize: s(14),
   },
   valueSlim: {
     fontFamily: "poppinsRegular",
-    color: labelColor,
-
+    color: valueColor,
+    fontSize: s(14),
   },
   valueTitle: {
     fontFamily: "poppinsSemiBold",
@@ -126,19 +130,20 @@ export const theme = {
 
   input: {
     color: "rgba(0, 0, 0, 0.7)",
-    backgroundColor: "#EDF1F2"
+    backgroundColor: "#EDF1F2",
+    borderRadius: s(16),
   },
 
   flexUtil: {
     display: "flex",
-    gap: 16,
+    gap: s(16),
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
   },
 
-  buttonPrimary,
   buttonSecondary,
+  buttonPrimary,
   cardPrimary,
   cardSecondary,
   cardTransparent,
@@ -146,4 +151,5 @@ export const theme = {
   magnetSecondary,
 
   labelBgColor,
+  buttonBgColor,
 };

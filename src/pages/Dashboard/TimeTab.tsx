@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
 import CloseIcon from "../../../assets/icons/UI/CloseIcon";
 
 import { theme } from "../../theme";
 import { AstroData, TideData, WWWData } from "~types";
 import { oneDay, oneHour } from "../../constants";
+import { s } from "react-native-size-matters";
 
 const weekDays = [
   "Monday",
@@ -84,10 +91,13 @@ export const TimeTab: React.FC<Props> = ({
   const time = weatherPredictionsByHour[currentHourId].time;
 
   return (
-    <View className="time-tab">
-      <View className="main">
-        <View className="time-info">
-          <Text style={theme.valueSlim}>
+    <View style={styles.tab} className="time-tab">
+      <View style={styles.main} className="main">
+        <TouchableOpacity onPress={onMinus3hours}>
+          <Text style={styles.btnMinus3h}>-3h</Text>
+        </TouchableOpacity>
+        <View style={styles.timeInfo} className="time-info">
+          <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
             {weekDays[(time.getDay() + 6) % 7] +
               ", " +
               months[time.getMonth()].toLowerCase() +
@@ -95,35 +105,24 @@ export const TimeTab: React.FC<Props> = ({
               time.getDate() +
               nth[time.getDate() % 10]}
           </Text>
-          <Text style={theme.value}>
+          <Text style={{ ...theme.value, textAlign: "center" }}>
             {("00" + time.getHours()).slice(-2) +
               ":" +
               ("00" + time.getMinutes()).slice(-2)}
           </Text>
-          <Text style={theme.valueSlim}>({makeRelativeTimeLabel(time)})</Text>
+          <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
+            ({makeRelativeTimeLabel(time)})
+          </Text>
         </View>
-        <TouchableOpacity
-          style={theme.buttonPrimary}
-          // className="btn-minus-3h"
-          onPress={onMinus3hours}
-        >
-          <Text>-3h</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={theme.buttonPrimary}
-          // className="btn-plus-3h"
-          onPress={onPlus3hours}
-        >
-          <Text>+3h</Text>
+        <TouchableOpacity onPress={onPlus3hours}>
+          <Text style={styles.btnPlus3h}>+3h</Text>
         </TouchableOpacity>
       </View>
       <>
-        <TouchableOpacity
-          style={theme.buttonsecondary}
-          onPress={() => setShowTimetable(!showTimetable)}
-          // className="show-timetable"
-        >
-          <Text>{`${showTimetable ? "hide" : "show"} timetable`}</Text>
+        <TouchableOpacity onPress={() => setShowTimetable(!showTimetable)}>
+          <Text style={styles.showTimetable}>{`${
+            showTimetable ? "hide" : "show"
+          } timetable`}</Text>
         </TouchableOpacity>
         {/* {showTimetable ? (
             <Timetable
@@ -141,18 +140,34 @@ export const TimeTab: React.FC<Props> = ({
 };
 
 const styles = ScaledSheet.create({
-  tab: { ...theme.flexUtil, alignItems: "flex-start" },
-  weatherData: {
-    alignItems: "center",
-    maxWidth: 448,
-    // width: "100%",
-    // height: "100%",
+  tab: {
+    ...theme.cardSecondary,
+    ...theme.flexUtil,
+    flexDirection: "column",
+    zIndex: 1, // to make sure showTimeTable button is over the next tab
+  } as ViewStyle,
+  main: {
+    ...theme.flexUtil,
+    width: "100%",
+    justifyContent: "space-between",
+    textAlign: "center",
+  } as ViewStyle,
+  timeInfo: {
+    flexShrink: 1,
   },
-  searchButton: {
-    // from HomePage.jsx
-    padding: 10,
-    margin: -10,
-    borderRadius: 24,
+  btnMinus3h: {
+    ...theme.buttonPrimary,
+    marginLeft: s(-10),
+  },
+  btnPlus3h: {
+    ...theme.buttonPrimary,
+    marginRight: s(-10),
+  },
+  showTimetable: {
+    ...theme.buttonSecondary,
+    textAlign: "center",
+    marginBottom: s(-30),
+    transform: [{ translateY: s(13) }],
   },
 });
 export default TimeTab;
