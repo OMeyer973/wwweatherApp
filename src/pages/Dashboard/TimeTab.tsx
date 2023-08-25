@@ -13,6 +13,7 @@ import { theme } from "../../theme";
 import { AstroData, TideData, WWWData } from "~types";
 import { oneDay, oneHour } from "../../constants";
 import { s } from "react-native-size-matters";
+import Timetable from "./TimeTab/Timetable";
 
 const weekDays = [
   "Monday",
@@ -91,12 +92,12 @@ export const TimeTab: React.FC<Props> = ({
   const time = weatherPredictionsByHour[currentHourId].time;
 
   return (
-    <View style={styles.tab} className="time-tab">
-      <View style={styles.main} className="main">
+    <View style={styles.tab}>
+      <View style={styles.main}>
         <TouchableOpacity onPress={onMinus3hours}>
           <Text style={styles.btnMinus3h}>-3h</Text>
         </TouchableOpacity>
-        <View style={styles.timeInfo} className="time-info">
+        <View style={styles.timeInfo}>
           <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
             {weekDays[(time.getDay() + 6) % 7] +
               ", " +
@@ -106,9 +107,10 @@ export const TimeTab: React.FC<Props> = ({
               nth[time.getDate() % 10]}
           </Text>
           <Text style={{ ...theme.value, textAlign: "center" }}>
-            {("00" + time.getHours()).slice(-2) +
-              ":" +
-              ("00" + time.getMinutes()).slice(-2)}
+            {time.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </Text>
           <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
             ({makeRelativeTimeLabel(time)})
@@ -118,23 +120,21 @@ export const TimeTab: React.FC<Props> = ({
           <Text style={styles.btnPlus3h}>+3h</Text>
         </TouchableOpacity>
       </View>
-      <>
-        <TouchableOpacity onPress={() => setShowTimetable(!showTimetable)}>
-          <Text style={styles.showTimetable}>{`${
-            showTimetable ? "hide" : "show"
-          } timetable`}</Text>
-        </TouchableOpacity>
-        {/* {showTimetable ? (
-            <Timetable
-              currentHourId={currentHourId}
-              astroData={astroData}
-              tideData={tideData}
-              weatherPredictionsByHour={weatherPredictionsByHour}
-            />
-          ) : (
-            ""
-          )} */}
-      </>
+      {showTimetable ? (
+        <Timetable
+          currentHourId={currentHourId}
+          astroData={astroData}
+          tideData={tideData}
+          weatherPredictionsByHour={weatherPredictionsByHour}
+        />
+      ) : (
+        ""
+      )}
+      <TouchableOpacity onPress={() => setShowTimetable(!showTimetable)}>
+        <Text style={styles.showTimetable}>{`${
+          showTimetable ? "hide" : "show"
+        } timetable`}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -54,7 +54,7 @@ const makeDummyRawWeatherData = () => {
 
 const weatherKeys = [
   // "a9a8d62a-409f-11ee-92e6-0242ac130002-a9a8d68e-409f-11ee-92e6-0242ac130002",
-  // "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
+  "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
   // "3ab4f248-40a0-11ee-a26f-0242ac130002-3ab4f2e8-40a0-11ee-a26f-0242ac130002",
   // "5ccc86d8-40a1-11ee-a26f-0242ac130002-5ccc8746-40a1-11ee-a26f-0242ac130002",
   // "8d4a9656-40a1-11ee-86b2-0242ac130002-8d4a96b0-40a1-11ee-86b2-0242ac130002",
@@ -122,6 +122,7 @@ const fetchAstroData = async (coordinates: Coordinates) => {
     }
   );
   const data = await res.json();
+  console.log("received astro data:", data);
   return data;
 };
 
@@ -142,6 +143,7 @@ const fetchTideData = async (coordinates: Coordinates) => {
     }
   );
   const data = await res.json();
+  console.log("received tide data");
   return data;
 };
 

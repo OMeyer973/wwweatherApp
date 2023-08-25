@@ -35,11 +35,7 @@ const SearchBar = ({ onSearch, onClear, ...props }) => {
 
   const buttonIsActive = Boolean(searchInput);
   return (
-    <View
-      {...props}
-      // className="search-bar"
-      style={{ ...styles.searchBar, ...props.style }}
-    >
+    <View {...props} style={{ ...styles.searchBar, ...props.style }}>
       <TextInput
         ref={inputRef}
         style={styles.input}
