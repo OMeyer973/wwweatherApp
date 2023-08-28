@@ -80,7 +80,8 @@ const styles = ScaledSheet.create({
     paddingVertical: s(4),
     paddingHorizontal: s(12),
     flexGrow: 1,
-    marginRight: s(4),
+    fontSize: theme.inputFontSize,
+    flexShrink: 1,
   },
   searchButton: {
     // borderRadius: 0,

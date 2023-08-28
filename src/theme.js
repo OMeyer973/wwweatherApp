@@ -18,6 +18,11 @@ const buttonBgColorSecondary = "#177d92";
 const tabColor = "#fff";
 const tabColorSecondary = "rgba(255, 255, 255, 0.8)";
 
+const inputBgColor = "#EDF1F2";
+const separatorColor = "#c7cbcc";
+
+const inputFontSize = s(15.5);
+
 // theme
 const buttonPrimary = ScaledSheet.create({
   backgroundColor: buttonBgColor,
@@ -130,7 +135,7 @@ export const theme = {
 
   input: {
     color: "rgba(0, 0, 0, 0.7)",
-    backgroundColor: "#EDF1F2",
+    backgroundColor: inputBgColor,
     borderRadius: s(16),
   },
 
@@ -152,4 +157,9 @@ export const theme = {
 
   labelBgColor,
   buttonBgColor,
+
+  inputFontSize,
+  inputBgColor,
+
+  separatorColor,
 };

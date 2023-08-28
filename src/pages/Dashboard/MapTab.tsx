@@ -284,7 +284,7 @@ export const MapTab: React.FC<Props> = ({ location, windData, wavesData }) => {
                   }}
                 >
                   <Text style={{ ...theme.magnetSecondary }}>
-                    Waves {wavesData.height.toFixed(0)} kts
+                    Waves {wavesData.height.toFixed(1)} m
                   </Text>
                 </View>
               </View>

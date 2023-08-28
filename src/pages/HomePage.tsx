@@ -133,18 +133,10 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
               >
                 {searchQuery?.features?.map((feature, key) => (
                   <View key={key}>
-                    <View style={styles.searchResult}>
-                      <TouchableOpacity
-                        style={{
-                          // borderRadius: 0,
-                          // padding: 10,
-                          margin: s(-5),
-                          borderRadius: s(24),
-                          marginLeft: s(4),
-                          marginRight: 0,
-                        }}
-                        onPress={() => setLocation(searchQuery?.features[key])}
-                      >
+                    <TouchableOpacity
+                      onPress={() => setLocation(searchQuery?.features[key])}
+                    >
+                      <View style={styles.searchResult}>
                         <View
                           style={{
                             ...theme.flexUtil,
@@ -187,8 +179,8 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
                             <RightArrowIcon />
                           </View>
                         </View>
-                      </TouchableOpacity>
-                    </View>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
