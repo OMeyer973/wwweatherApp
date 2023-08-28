@@ -53,36 +53,42 @@ const WindWavesTab: React.FC<Props> = ({ wavesData, windData }) => {
           </Text>
         </View>
       </View>
-      <View style={styles.tab}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Waves</Text>
-          <WavesArrow
-            height={32}
-            width={32}
-            style={{
-              transform: [{ rotate: "" + wavesData?.direction + "deg" }],
-            }}
-          />
-        </View>
+      {!wavesData?.direction ? (
+        ""
+      ) : (
+        <View style={styles.tab}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Waves</Text>
+            <WavesArrow
+              height={32}
+              width={32}
+              style={{
+                transform: [{ rotate: "" + wavesData?.direction + "deg" }],
+              }}
+            />
+          </View>
 
-        <View style={styles.dataRow}>
-          <Text style={theme.label}>Height</Text>
-          <Text style={theme.value}>{wavesData?.height.toFixed(1) + " m"}</Text>
+          <View style={styles.dataRow}>
+            <Text style={theme.label}>Height</Text>
+            <Text style={theme.value}>
+              {wavesData?.height.toFixed(1) + " m"}
+            </Text>
+          </View>
+          <View style={styles.dataRow}>
+            <Text style={theme.label}>Tide</Text>
+            <Text style={theme.value}>{wavesData?.tide}</Text>
+          </View>
+          <View style={styles.dataRow}>
+            <Text style={theme.label}>Direction</Text>
+            <Text style={theme.value}>
+              {angleToCardinal(wavesData?.direction) +
+                "/" +
+                wavesData?.direction.toFixed(0) +
+                "°"}
+            </Text>
+          </View>
         </View>
-        <View style={styles.dataRow}>
-          <Text style={theme.label}>Tide</Text>
-          <Text style={theme.value}>{wavesData?.tide}</Text>
-        </View>
-        <View style={styles.dataRow}>
-          <Text style={theme.label}>Direction</Text>
-          <Text style={theme.value}>
-            {angleToCardinal(wavesData?.direction) +
-              "/" +
-              wavesData?.direction.toFixed(0) +
-              "°"}
-          </Text>
-        </View>
-      </View>
+      )}
     </View>
   );
 };

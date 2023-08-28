@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ScaledSheet } from "react-native-size-matters";
+import { ScaledSheet, s } from "react-native-size-matters";
 import SearchBar from "../components/SearchBar";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
 
@@ -31,6 +31,7 @@ import WeatherTab from "./Dashboard/WeatherTab";
 import WindWavesTab from "./Dashboard/WindWavesTab";
 import { MapTab } from "./Dashboard/MapTab";
 import TimeTab from "./Dashboard/TimeTab";
+import { theme } from "../theme";
 
 // start yesterday at midnight (local time)
 
@@ -54,9 +55,9 @@ const makeDummyRawWeatherData = () => {
 
 const weatherKeys = [
   // "a9a8d62a-409f-11ee-92e6-0242ac130002-a9a8d68e-409f-11ee-92e6-0242ac130002",
-  "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
+  // "746e3610-6106-11eb-8ed6-0242ac130002-746e367e-6106-11eb-8ed6-0242ac130002",
   // "3ab4f248-40a0-11ee-a26f-0242ac130002-3ab4f2e8-40a0-11ee-a26f-0242ac130002",
-  // "5ccc86d8-40a1-11ee-a26f-0242ac130002-5ccc8746-40a1-11ee-a26f-0242ac130002",
+  "5ccc86d8-40a1-11ee-a26f-0242ac130002-5ccc8746-40a1-11ee-a26f-0242ac130002",
   // "8d4a9656-40a1-11ee-86b2-0242ac130002-8d4a96b0-40a1-11ee-86b2-0242ac130002",
   // "a2fa695e-40a1-11ee-8b7f-0242ac130002-a2fa6a1c-40a1-11ee-8b7f-0242ac130002",
   // "bd3fea3c-40a1-11ee-a654-0242ac130002-bd3feab4-40a1-11ee-a654-0242ac130002",
@@ -185,89 +186,100 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
   }, [location]);
 
   return (
-    <View style={styles.dashboard}>
+    <View style={styles.dashboardHolder}>
       <ScrollView>
-        <LocationTab
-          location={location ? location.name : ""}
-          country={location ? location.region : ""}
-          setLocation={setLocation}
-        />
-        <TimeTab
-          // time={predictions[currentPredictionId].time}
-          currentHourId={currentHourId}
-          astroData={astroData}
-          tideData={tideData}
-          weatherPredictionsByHour={weatherPredictionsByHour}
-          onMinus3hours={() => {
-            // console.log(
-            //   "onMinus3hours " +
-            //     currentHourId +
-            //     " " +
-            //     Math.max(0, currentHourId - 3)
-            // );
-            setCurrentHourId(Math.max(0, currentHourId - 3));
-          }}
-          onPlus3hours={() => {
-            // console.log(
-            //   "onPlus3hours " +
-            //     currentHourId +
-            //     " " +
-            //     Math.min(0, currentHourId + 3)
-            // );
-            setCurrentHourId(
-              Math.min(weatherPredictionsByHour.length - 1, currentHourId + 3)
-            );
-          }}
-        />
-        <MapTab
-          location={location}
-          windData={
-            weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId]?.windData
-          }
-          wavesData={
-            weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId]?.wavesData
-          }
-        />
-        {/* {console.log("weatherPredictionsByHour", weatherPredictionsByHour)}
+        <View style={styles.dashboard}>
+          <LocationTab
+            location={location ? location.name : ""}
+            country={location ? location.region : ""}
+            setLocation={setLocation}
+          />
+          <TimeTab
+            // time={predictions[currentPredictionId].time}
+            currentHourId={currentHourId}
+            astroData={astroData}
+            tideData={tideData}
+            weatherPredictionsByHour={weatherPredictionsByHour}
+            onMinus3hours={() => {
+              // console.log(
+              //   "onMinus3hours " +
+              //     currentHourId +
+              //     " " +
+              //     Math.max(0, currentHourId - 3)
+              // );
+              setCurrentHourId(Math.max(0, currentHourId - 3));
+            }}
+            onPlus3hours={() => {
+              // console.log(
+              //   "onPlus3hours " +
+              //     currentHourId +
+              //     " " +
+              //     Math.min(0, currentHourId + 3)
+              // );
+              setCurrentHourId(
+                Math.min(
+                  weatherPredictionsByHour?.length - 1,
+                  currentHourId + 3
+                )
+              );
+            }}
+          />
+          <MapTab
+            location={location}
+            windData={
+              weatherPredictionsByHour &&
+              weatherPredictionsByHour[currentHourId]?.windData
+            }
+            wavesData={
+              weatherPredictionsByHour &&
+              weatherPredictionsByHour[currentHourId]?.wavesData
+            }
+          />
+          {/* {console.log("weatherPredictionsByHour", weatherPredictionsByHour)}
         {console.log("currentHourId", currentHourId)} */}
-        <WeatherTab
-          weatherData={
-            weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId]?.weatherData
-          }
-        />
-        <WindWavesTab
-          windData={
-            weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId]?.windData
-          }
-          wavesData={
-            weatherPredictionsByHour &&
-            weatherPredictionsByHour[currentHourId]?.wavesData
-          }
-        />
+          <WeatherTab
+            weatherData={
+              weatherPredictionsByHour &&
+              weatherPredictionsByHour[currentHourId]?.weatherData
+            }
+          />
+          <WindWavesTab
+            windData={
+              weatherPredictionsByHour &&
+              weatherPredictionsByHour[currentHourId]?.windData
+            }
+            wavesData={
+              weatherPredictionsByHour &&
+              weatherPredictionsByHour[currentHourId]?.wavesData
+            }
+          />
 
-        {/*<ForecastTab
+          {/*<ForecastTab
           predictions={weatherPredictionsByHour}
           currentPredictionId={currentHourId}
           setCurrentPredictionId={setCurrentHourId}
         /> */}
+        </View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = ScaledSheet.create({
-  dashboard: {
+  dashboardHolder: {
     marginTop: statusBarHeight,
+  },
+  dashboard: {
+    // backgroundColor: theme.tabColor,
+    // backgroundColor: "#00ff00",
     // height: "100%",
     // width: "100%",
     maxWidth: 900,
     // margin: margin(32, "auto"),
     // border: 0.125em solid rgba(0, 0, 0, 0);
-    borderRadius: 24,
+    borderRadius: s(24),
+    marginTop: s(12),
+    marginBottom: s(12),
     borderStyle: "solid",
     borderWidth: 0,
     borderColor: "rgba(0, 0, 0, 0)",

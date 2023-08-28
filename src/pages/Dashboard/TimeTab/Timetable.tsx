@@ -34,24 +34,28 @@ const daysPredicted = Array(numberDaysPredicted)
 
 const makeTidesByDay: (tideData: TideData[]) => TidesToday[] = (tideData) =>
   daysPredicted.map((date: Date) => ({
-    lowTides: tideData.filter(
-      (tideItem: TideData) =>
-        isSameDay(new Date(tideItem.time), date) && tideItem.type == "low"
-    ),
+    lowTides: !tideData?.length
+      ? []
+      : tideData.filter(
+          (tideItem: TideData) =>
+            isSameDay(new Date(tideItem.time), date) && tideItem.type == "low"
+        ),
 
-    highTides: tideData.filter(
-      (tideItem: TideData) =>
-        isSameDay(new Date(tideItem.time), date) && tideItem.type == "high"
-    ),
+    highTides: !tideData?.length
+      ? []
+      : tideData.filter(
+          (tideItem: TideData) =>
+            isSameDay(new Date(tideItem.time), date) && tideItem.type == "high"
+        ),
   }));
 
 const makeWindMinmaxsByDay: (predictions: WWWData[]) => WindMinMax[] = (
   predictions
 ) =>
   daysPredicted.map((date: Date) => {
-    const todaysPredictions = predictions.filter((item) =>
-      isSameDay(item.time, date)
-    );
+    const todaysPredictions = !predictions?.length
+      ? []
+      : predictions.filter((item) => isSameDay(item.time, date));
     return {
       fastestWind: todaysPredictions.reduce(
         (prev, current) =>
@@ -83,12 +87,16 @@ const makeWavesMinmaxsByDay: (predictions: WWWData[]) => WavesMinMax[] = (
     return {
       highestWaves: todaysPredictions.reduce(
         (prev, current) =>
-          prev.wavesData.height >= current.wavesData.height ? prev : current,
+          prev?.wavesData?.height >= current?.wavesData?.height
+            ? prev
+            : current,
         todaysPredictions[0] ? todaysPredictions[0] : placeholderWWWData
       ),
       lowestWaves: todaysPredictions.reduce(
         (prev, current) =>
-          prev.wavesData.height <= current.wavesData.height ? prev : current,
+          prev?.wavesData?.height <= current?.wavesData?.height
+            ? prev
+            : current,
         todaysPredictions[0] ? todaysPredictions[0] : placeholderWWWData
       ),
     };
@@ -144,8 +152,8 @@ export const Timetable: React.FC<Props> = React.memo(
                   {new Date(
                     astroData[currentDayId].civilDusk
                   ).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
+                    hour: "numeric",
+                    minute: "numeric",
                   })}
                 </Text>
               </View>
@@ -196,7 +204,7 @@ export const Timetable: React.FC<Props> = React.memo(
                 <Text style={theme.valueSmall}>
                   {" "}
                   {new Date(
-                    windMinmaxsByDay[currentDayId].fastestWind.time
+                    windMinmaxsByDay[currentDayId]?.fastestWind?.time
                   ).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -209,7 +217,7 @@ export const Timetable: React.FC<Props> = React.memo(
                 <Text style={theme.valueSmall}>
                   {" "}
                   {new Date(
-                    windMinmaxsByDay[currentDayId].slowestWind.time
+                    windMinmaxsByDay[currentDayId]?.slowestWind?.time
                   ).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -228,7 +236,7 @@ export const Timetable: React.FC<Props> = React.memo(
                 <Text style={theme.valueSmall}>
                   {" "}
                   {new Date(
-                    wavesMinmaxsByDay[currentDayId].highestWaves.time
+                    wavesMinmaxsByDay[currentDayId]?.highestWaves?.time
                   ).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -241,7 +249,7 @@ export const Timetable: React.FC<Props> = React.memo(
                 <Text style={theme.valueSmall}>
                   {" "}
                   {new Date(
-                    wavesMinmaxsByDay[currentDayId].lowestWaves.time
+                    wavesMinmaxsByDay[currentDayId]?.lowestWaves?.time
                   ).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",

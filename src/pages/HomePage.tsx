@@ -104,75 +104,96 @@ const HomePage: React.FC<Props> = ({ setLocation }) => {
         <View
           style={{ ...styles.container, height: isSearchUp ? "100%" : "auto" }}
         >
-          {isSearchUp && (
-            <Text style={theme.valueTitle}>Wind waves weather</Text>
-          )}
+          <View
+            style={{
+              paddingHorizontal: theme.cardPrimary.paddingHorizontal,
+              marginBottom: s(8),
+            }}
+          >
+            {isSearchUp && (
+              <Text style={theme.valueTitle}>Wind waves weather</Text>
+            )}
 
-          <Text style={theme.label}>Find a spot</Text>
-          <SearchBar
-            onSearch={onSearch}
-            onClear={onClear}
-            style={{ marginBottom: 6 }}
-          />
-
-          {searchQuery?.features?.map((feature, key) => (
-            <View key={key}>
-              <View style={styles.searchResult}>
-                <View
-                  style={{
-                    ...theme.flexUtil,
-                    width: "100%",
-                    maxWidth: "100%",
-                    // overflow: "scroll"
-                  }}
-                >
-                  <Text style={{ flexShrink: 1 }}>
-                    <Text
-                      style={{
-                        fontFamily: "poppinsSemiBold",
-                        // letterSpacing: -0.2,
-                      }}
-                    >
-                      {feature.name}
-                    </Text>
-                    {feature.region && (
-                      <Text
+            <Text style={theme.label}>Find a spot</Text>
+            <SearchBar
+              onSearch={onSearch}
+              onClear={onClear}
+              style={{ marginBottom: 6 }}
+            />
+          </View>
+          {!searchQuery?.features?.length ? (
+            <></>
+          ) : (
+            <ScrollView>
+              <View
+                style={{
+                  paddingHorizontal: theme.cardPrimary.paddingHorizontal,
+                  paddingBottom: theme.cardPrimary.paddingVertical,
+                }}
+              >
+                {searchQuery?.features?.map((feature, key) => (
+                  <View key={key}>
+                    <View style={styles.searchResult}>
+                      <TouchableOpacity
                         style={{
-                          color: "grey",
-                          fontFamily: "poppinsRegular",
-                          // letterSpacing: -0.2,
+                          // borderRadius: 0,
+                          // padding: 10,
+                          margin: s(-5),
+                          borderRadius: s(24),
+                          marginLeft: s(4),
+                          marginRight: 0,
                         }}
+                        onPress={() => setLocation(searchQuery?.features[key])}
                       >
-                        {", "}
-                      </Text>
-                    )}
-                    <Text
-                      style={{
-                        color: "grey",
-                        fontFamily: "poppinsRegular",
-                        // letterSpacing: -0.2,
-                      }}
-                    >
-                      {feature.region}
-                    </Text>
-                  </Text>
-                  <TouchableOpacity
-                    style={{
-                      // borderRadius: 0,
-                      // padding: 10,
-                      margin: s(-5),
-                      borderRadius: s(24),
-                      marginLeft: s(4),
-                      marginRight: 0,
-                    }}
-                    onPress={() => setLocation(searchQuery?.features[key])}
-                  >
-                    <RightArrowIcon />
-                  </TouchableOpacity>
-                </View>
+                        <View
+                          style={{
+                            ...theme.flexUtil,
+                            width: "100%",
+                            maxWidth: "100%",
+                            // overflow: "scroll"
+                          }}
+                        >
+                          <Text style={{ flexShrink: 1 }}>
+                            <Text
+                              style={{
+                                fontFamily: "poppinsSemiBold",
+                                // letterSpacing: -0.2,
+                              }}
+                            >
+                              {feature.name}
+                            </Text>
+                            {feature.region && (
+                              <Text
+                                style={{
+                                  color: "grey",
+                                  fontFamily: "poppinsRegular",
+                                  // letterSpacing: -0.2,
+                                }}
+                              >
+                                {", "}
+                              </Text>
+                            )}
+                            <Text
+                              style={{
+                                color: "grey",
+                                fontFamily: "poppinsRegular",
+                                // letterSpacing: -0.2,
+                              }}
+                            >
+                              {feature.region}
+                            </Text>
+                          </Text>
+                          <View>
+                            <RightArrowIcon />
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))}
               </View>
-            </View>
-          ))}
+            </ScrollView>
+          )}
         </View>
       </View>
 
@@ -208,6 +229,7 @@ const styles = ScaledSheet.create({
   },
   container: {
     ...theme.cardPrimary,
+    paddingHorizontal: 0,
     borderRadius: s(24),
   } as ViewStyle,
   searchResult: {

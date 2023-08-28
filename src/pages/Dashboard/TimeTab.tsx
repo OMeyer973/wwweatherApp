@@ -89,7 +89,10 @@ export const TimeTab: React.FC<Props> = ({
     setCurrentDayId(Math.floor(currentHourId / 24));
   }, [currentHourId]);
 
-  const time = weatherPredictionsByHour[currentHourId].time;
+  const time =
+    weatherPredictionsByHour && weatherPredictionsByHour[currentHourId]?.time
+      ? weatherPredictionsByHour[currentHourId].time
+      : new Date();
 
   return (
     <View style={styles.tab}>

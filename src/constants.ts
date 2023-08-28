@@ -34,4 +34,4 @@ export const placeholderWWWData: WWWData = {
 };
 
 // style
-export const statusBarHeight = StatusBar.currentHeight + 8
+export const statusBarHeight = StatusBar.currentHeight + 4;
