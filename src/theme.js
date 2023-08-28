@@ -155,8 +155,11 @@ export const theme = {
   magnetPrimary,
   magnetSecondary,
 
+  tabColor,
+
   labelBgColor,
   buttonBgColor,
+  buttonBgColorSecondary,
 
   inputFontSize,
   inputBgColor,

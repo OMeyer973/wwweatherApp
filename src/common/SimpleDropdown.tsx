@@ -33,12 +33,13 @@ import DownArrowIcon from "../../assets/icons/UI/DownArrowIcon";
 export interface Props {
   options: string[];
   onChange: (value: string) => any;
-  defaultValue: string;
-  placeHolder: string;
-  dropdownStyle: ViewStyle;
-  dropdownTextStyle: ViewStyle;
-  optionStyle: ViewStyle;
-  optionTextStyle: ViewStyle;
+  defaultValue?: string;
+  placeHolder?: string;
+  dropUp?: boolean;
+  dropdownStyle?: ViewStyle;
+  dropdownTextStyle?: ViewStyle;
+  optionStyle?: ViewStyle;
+  optionTextStyle?: ViewStyle;
 }
 
 export const SimpleDropdown: React.FC<Props> = React.memo(
@@ -47,6 +48,7 @@ export const SimpleDropdown: React.FC<Props> = React.memo(
     onChange,
     defaultValue,
     placeHolder,
+    dropUp,
     dropdownStyle,
     dropdownTextStyle,
     optionStyle,
@@ -82,7 +84,13 @@ export const SimpleDropdown: React.FC<Props> = React.memo(
           </View>
         </TouchableOpacity>
         {isOpen && (
-          <View style={styles.options}>
+          <View
+            style={{
+              ...styles.options,
+              top: dropUp ? undefined : "100%",
+              bottom: dropUp ? "100%" : undefined,
+            }}
+          >
             {options?.map((option, id) => (
               <View key={id}>
                 <TouchableOpacity
@@ -133,13 +141,22 @@ const styles = ScaledSheet.create({
   options: {
     zIndex: 1,
     position: "absolute",
-    top: "100%",
     width: "100%",
     overflow: "hidden",
     borderColor: theme.inputBgColor,
-    borderWidth: s(2),
+    backgroundColor: theme.tabColor,
+    // borderWidth: s(2),
     borderRadius: s(16),
-    marginTop: s(8),
+    marginVertical: s(8),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   } as ViewStyle,
   option: {
     paddingHorizontal: s(12),

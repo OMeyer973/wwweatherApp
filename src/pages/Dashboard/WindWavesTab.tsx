@@ -97,7 +97,7 @@ const styles = ScaledSheet.create({
   container: {
     ...theme.flexUtil,
     width: "100%",
-    gap: 2,
+    gap: s(2),
   },
   tab: {
     ...(theme.cardSecondary as ViewStyle),
@@ -108,7 +108,7 @@ const styles = ScaledSheet.create({
   },
   header: {
     ...theme.flexUtil,
-    marginBottom: 40,
+    marginBottom: s(40),
     paddingRight: s(8),
     // width: "100%",
   },

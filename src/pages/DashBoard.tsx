@@ -33,6 +33,7 @@ import { MapTab } from "./Dashboard/MapTab";
 import TimeTab from "./Dashboard/TimeTab";
 import { theme } from "../theme";
 import { SimpleDropdown } from "../common/SimpleDropdown";
+import ForecastTab from "./Dashboard/ForecastTab";
 
 // start yesterday at midnight (local time)
 
@@ -255,18 +256,11 @@ const Dashboard: React.FC<Props> = ({ location, setLocation }) => {
             }
           />
 
-          {/*<ForecastTab
-          predictions={weatherPredictionsByHour}
-          currentPredictionId={currentHourId}
-          setCurrentPredictionId={setCurrentHourId}
-        /> */}
-          <View style={{ ...theme.cardPrimary, paddingBottom: 200 }}>
-            <SimpleDropdown
-              defaultValue={"Wind forecast"}
-              options={["Wind forecast", "Waves forecast", "Weather forecast"]}
-              dropdownTextStyle={theme.title}
-            />
-          </View>
+          <ForecastTab
+            predictions={weatherPredictionsByHour}
+            currentPredictionId={currentHourId}
+            setCurrentPredictionId={setCurrentHourId}
+          />
         </View>
       </ScrollView>
     </View>
