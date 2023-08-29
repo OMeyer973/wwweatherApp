@@ -1,4 +1,5 @@
 import { StatusBar } from "react-native";
+import { Dimensions } from "react-native";
 import {
   TimetableData,
   WeatherData,
@@ -35,3 +36,5 @@ export const placeholderWWWData: WWWData = {
 
 // style
 export const statusBarHeight = StatusBar.currentHeight + 4;
+
+export const windowWidth = Dimensions.get('window').width;

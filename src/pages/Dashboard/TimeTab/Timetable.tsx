@@ -160,7 +160,7 @@ export const Timetable: React.FC<Props> = React.memo(
             </View>
           )}
           {!tidesByDay[currentDayId] ? (
-            <>{console.log(tidesByDay)}</>
+            <></>
           ) : (
             <View style={{ flex: 1, marginBottom: s(16) }}>
               <View style={styles.labelValue}>

@@ -5,6 +5,7 @@ import { s, vs, ms, mvs } from "react-native-size-matters";
 
 import Value from "../../components/Value";
 import { theme } from "../../theme.js";
+import { windowWidth } from "../../constants";
 import { WindData, WavesData } from "types";
 
 import { angleToCardinal, clamp } from "../../utils";
@@ -115,6 +116,12 @@ const styles = ScaledSheet.create({
   title: {
     ...theme.title,
   },
-  dataRow: { ...theme.flexUtil, marginBottom: 16, flexWrap: "wrap" },
+  dataRow: {
+    ...theme.flexUtil,
+    marginBottom: s(16),
+    flexDirection: windowWidth > 500 ? "row" : "column",
+    gap: s(4),
+    alignItems: "flex-start",
+  },
 });
 export default WindWavesTab;

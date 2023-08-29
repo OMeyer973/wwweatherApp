@@ -11,7 +11,7 @@ import CloseIcon from "../../../assets/icons/UI/CloseIcon";
 
 import { theme } from "../../theme";
 import { AstroData, TideData, WWWData } from "~types";
-import { oneDay, oneHour } from "../../constants";
+import { oneDay, oneHour, windowWidth } from "../../constants";
 import { s } from "react-native-size-matters";
 import Timetable from "./TimeTab/Timetable";
 
@@ -101,14 +101,22 @@ export const TimeTab: React.FC<Props> = ({
           <Text style={styles.btnMinus3h}>-3h</Text>
         </TouchableOpacity>
         <View style={styles.timeInfo}>
-          <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
-            {weekDays[(time.getDay() + 6) % 7] +
-              ", " +
-              months[time.getMonth()].toLowerCase() +
-              " " +
-              time.getDate() +
-              nth[time.getDate() % 10]}
-          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: windowWidth > 500 ? "row" : "column",
+            }}
+          >
+            <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
+              {weekDays[(time.getDay() + 6) % 7] + ", "}
+            </Text>
+            <Text style={{ ...theme.valueSlim, textAlign: "center" }}>
+              {months[time.getMonth()].toLowerCase() +
+                " " +
+                time.getDate() +
+                nth[time.getDate() % 10]}
+            </Text>
+          </View>
           <Text style={{ ...theme.value, textAlign: "center" }}>
             {time.toLocaleTimeString([], {
               hour: "2-digit",

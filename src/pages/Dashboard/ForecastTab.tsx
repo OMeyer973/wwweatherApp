@@ -22,6 +22,7 @@ import { angleToCardinal, clamp } from "../../utils";
 import { Svg, SvgUri } from "react-native-svg";
 import SimpleDropdown from "../../common/SimpleDropdown";
 import { oneHour } from "../../constants";
+import { makeRelativeTimeLabel } from "./TimeTab";
 
 // import { Magnet } from "../../components/atoms/Magnet";
 
@@ -66,6 +67,14 @@ const months = [
 //   return { width, height };
 // };
 
+const graphHeight = s(120);
+
+const boundedTranslate = (displacement, componentSize, containerSize) =>
+  Math.min(
+    Math.max(0, displacement - componentSize / 2),
+    containerSize - componentSize
+  );
+
 export interface Props {
   predictions: WWWData[];
   currentPredictionId: number;
@@ -85,6 +94,10 @@ export const ForecastTab: React.FC<Props> = ({
   const scrollOffsetRef = useRef<number>(0);
   const [scrollOffset, setScrollOffset] = useState<number>(0);
 
+  const [primaryMagnetWidth, setPrimaryMagnetWidth] = useState<number>(0);
+  const [secondaryMagnetWidth, setSecondaryMagnetWidth] = useState<number>(0);
+
+  console.log(primaryMagnetWidth);
   const graphContainer = useRef(null);
   // useResize(graphContainer);
   // const graphContainerWidth = graphContainer.current
@@ -95,6 +108,24 @@ export const ForecastTab: React.FC<Props> = ({
   //   : graphContainerWidth;
 
   const currTime = predictions[currentPredictionId].time;
+
+  const [touchLocation, setTouchLocation] = useState<any>(null);
+
+  const onTouchStart = (e) => {
+    setTouchLocation({
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    });
+  };
+  const onTouchEnd = (e) => {
+    if (
+      Math.abs(touchLocation.x - e.nativeEvent.locationX) +
+        Math.abs(touchLocation.y - e.nativeEvent.locationY) <
+      5
+    ) {
+      onGraphTouch(e);
+    }
+  };
 
   const onGraphTouch = (e) => {
     if (e.nativeEvent.locationX) {
@@ -109,6 +140,7 @@ export const ForecastTab: React.FC<Props> = ({
       );
     }
   };
+
   const graphWidth = 800; // todo make dynamic?
 
   const primaryCursorPosition =
@@ -140,51 +172,93 @@ export const ForecastTab: React.FC<Props> = ({
         horizontal={true}
         ref={graphContainer}
         // onScroll={handleScroll}
-        onTouchStart={onGraphTouch}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
         <View // FORECAST GRAH GOES HERE
           style={{
             backgroundColor: "#aef",
             width: graphWidth,
-            height: s(90),
+            height: graphHeight,
+            marginBottom: s(54),
           }}
-        ></View>
-        <View
-          style={{
-            ...styles.cursorPrimary,
-            left: primaryCursorPosition,
-          }}
-        ></View>
+        />
+
         <View
           style={{
             ...styles.cursorSecondary,
-            left: secondaryCursorPosition,
+            left: secondaryCursorPosition - s(1.5),
           }}
-        ></View>
+        />
         {/* <ForecastGraph
           predictions={predictions}
           graphType={graphType}
           graphWidth={graphWidth}
           onMouseMove={setPredictionFromMouseEvent}
         /> */}
-        {/* 
-        <BoundedLabel
-          minX={0}
-          maxX={graphWidth}
-          centerX={secondaryCursorPosition}
-          style = {styles.graphLabel}
+        <View
+          style={{
+            position: "absolute",
+            top: graphHeight + s(4),
+            // left: boundedTranslate(
+            //   secondaryCursorPosition,
+            //   secondaryMagnetWidth,
+            //   graphWidth
+            // ),
+            transform: [
+              {
+                translateX: boundedTranslate(
+                  secondaryCursorPosition,
+                  secondaryMagnetWidth,
+                  graphWidth
+                ),
+              },
+            ],
+            zIndex: 1,
+          }}
+          onLayout={(e) =>
+            secondaryMagnetWidth != Math.round(e.nativeEvent.layout.width)
+              ? setSecondaryMagnetWidth(Math.round(e.nativeEvent.layout.width))
+              : ""
+          } // todo find a better way... this may cause infinite render. rounding helps but still not great
         >
-          <Magnet color="secondary">Now </Magnet>
-        </BoundedLabel>
+          <Text style={{ ...theme.magnetSecondary }}>Now </Text>
+        </View>
 
-        <BoundedLabel
-          size={{ width: 120, height: 100 }} // non mandatory, prevents flickering
-          minX={0}
-          maxX={graphWidth}
-          centerX={primaryCursorPosition}
-          style = {styles.graphLabel}
+        <View
+          style={{
+            ...styles.cursorPrimary,
+            left: primaryCursorPosition - s(1.5),
+          }}
+        />
+        <View
+          style={{
+            position: "absolute",
+            top: graphHeight + s(4),
+            // left: boundedTranslate(
+            //   primaryCursorPosition,
+            //   primaryMagnetWidth,
+            //   graphWidth
+            // ),
+            transform: [
+              {
+                translateX: boundedTranslate(
+                  primaryCursorPosition,
+                  primaryMagnetWidth,
+                  graphWidth
+                ),
+              },
+            ],
+
+            zIndex: 1,
+          }}
+          onLayout={(e) =>
+            primaryMagnetWidth != Math.round(e.nativeEvent.layout.width)
+              ? setPrimaryMagnetWidth(Math.round(e.nativeEvent.layout.width))
+              : ""
+          } // todo find a better way... this may cause infinite render. rounding helps but still not great
         >
-          <Magnet>
+          <Text style={{ ...theme.magnetPrimary }}>
             {weekDays[(currTime.getDay() + 6) % 7] +
               " " +
               months[currTime.getMonth()].toLowerCase() +
@@ -194,12 +268,11 @@ export const ForecastTab: React.FC<Props> = ({
               ("00" + currTime.getHours()).slice(-2) +
               ":" +
               ("00" + currTime.getMinutes()).slice(-2)}
-          </Magnet>
-          <br />
-          <label style = {styles.label}>
+          </Text>
+          <Text style={{ ...theme.label, width: "100%", textAlign: "center" }}>
             {" (" + makeRelativeTimeLabel(currTime) + ")"}
-          </label>
-        </BoundedLabel> */}
+          </Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -215,7 +288,7 @@ const styles = ScaledSheet.create({
   cursorPrimary: {
     position: "absolute",
     zIndex: 1,
-    height: "100%",
+    height: graphHeight,
     width: s(3),
     backgroundColor: theme.buttonBgColor,
     // marginLeft: "50%",
@@ -223,7 +296,7 @@ const styles = ScaledSheet.create({
   cursorSecondary: {
     position: "absolute",
     zIndex: 1,
-    height: "100%",
+    height: graphHeight,
     width: s(3),
     backgroundColor: theme.buttonBgColorSecondary,
   },
