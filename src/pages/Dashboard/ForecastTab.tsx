@@ -23,6 +23,7 @@ import { Svg, SvgUri } from "react-native-svg";
 import SimpleDropdown from "../../common/SimpleDropdown";
 import { oneHour } from "../../constants";
 import { makeRelativeTimeLabel } from "./TimeTab";
+import ForecastGraph from "./ForecastTab/ForecastGraph";
 
 // import { Magnet } from "../../components/atoms/Magnet";
 
@@ -86,7 +87,7 @@ export const ForecastTab: React.FC<Props> = ({
   currentPredictionId,
   setCurrentPredictionId,
 }) => {
-  // const [graphType, setGraphType] = useState<GraphType>("wind");
+  const [graphType, setGraphType] = useState<GraphType>("wind");
 
   const options = ["Wind forecast", "Waves forecast", "Weather forecast"];
 
@@ -94,10 +95,15 @@ export const ForecastTab: React.FC<Props> = ({
   const scrollOffsetRef = useRef<number>(0);
   const [scrollOffset, setScrollOffset] = useState<number>(0);
 
-  const [primaryMagnetWidth, setPrimaryMagnetWidth] = useState<number>(0);
-  const [secondaryMagnetWidth, setSecondaryMagnetWidth] = useState<number>(0);
+  const primaryMagnetWidthRef = useRef<number>(0);
+  const secondaryMagnetWidthRef = useRef<number>(0);
 
-  console.log(primaryMagnetWidth);
+  console.log(
+    "render ForecastTab ",
+    primaryMagnetWidthRef.current,
+    " ",
+    secondaryMagnetWidthRef.current
+  );
   const graphContainer = useRef(null);
   // useResize(graphContainer);
   // const graphContainerWidth = graphContainer.current
@@ -109,18 +115,18 @@ export const ForecastTab: React.FC<Props> = ({
 
   const currTime = predictions[currentPredictionId].time;
 
-  const [touchLocation, setTouchLocation] = useState<any>(null);
+  const touchLocationRef = useRef<any>(null);
 
   const onTouchStart = (e) => {
-    setTouchLocation({
+    touchLocationRef.current = {
       x: e.nativeEvent.locationX,
       y: e.nativeEvent.locationY,
-    });
+    };
   };
   const onTouchEnd = (e) => {
     if (
-      Math.abs(touchLocation.x - e.nativeEvent.locationX) +
-        Math.abs(touchLocation.y - e.nativeEvent.locationY) <
+      Math.abs(touchLocationRef.current.x - e.nativeEvent.locationX) +
+        Math.abs(touchLocationRef.current.y - e.nativeEvent.locationY) <
       5
     ) {
       onGraphTouch(e);
@@ -175,14 +181,14 @@ export const ForecastTab: React.FC<Props> = ({
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <View // FORECAST GRAH GOES HERE
+        {/* <View // FORECAST GRAH GOES HERE
           style={{
             backgroundColor: "#aef",
             width: graphWidth,
             height: graphHeight,
             marginBottom: s(54),
           }}
-        />
+        /> */}
 
         <View
           style={{
@@ -190,12 +196,14 @@ export const ForecastTab: React.FC<Props> = ({
             left: secondaryCursorPosition - s(1.5),
           }}
         />
-        {/* <ForecastGraph
+        <ForecastGraph
           predictions={predictions}
-          graphType={graphType}
+          // graphType={graphType}
+          graphType={"wind"}
           graphWidth={graphWidth}
-          onMouseMove={setPredictionFromMouseEvent}
-        /> */}
+          graphHeight={graphHeight}
+          // onMouseMove={setPredictionFromMouseEvent}
+        />
         <View
           style={{
             position: "absolute",
@@ -209,7 +217,7 @@ export const ForecastTab: React.FC<Props> = ({
               {
                 translateX: boundedTranslate(
                   secondaryCursorPosition,
-                  secondaryMagnetWidth,
+                  secondaryMagnetWidthRef.current,
                   graphWidth
                 ),
               },
@@ -217,12 +225,12 @@ export const ForecastTab: React.FC<Props> = ({
             zIndex: 1,
           }}
           onLayout={(e) =>
-            secondaryMagnetWidth != Math.round(e.nativeEvent.layout.width)
-              ? setSecondaryMagnetWidth(Math.round(e.nativeEvent.layout.width))
-              : ""
-          } // todo find a better way... this may cause infinite render. rounding helps but still not great
+            (secondaryMagnetWidthRef.current = Math.round(
+              e.nativeEvent.layout.width
+            ))
+          }
         >
-          <Text style={{ ...theme.magnetSecondary }}>Now </Text>
+          <Text style={{ ...theme.magnetSecondary }}>Now</Text>
         </View>
 
         <View
@@ -244,7 +252,7 @@ export const ForecastTab: React.FC<Props> = ({
               {
                 translateX: boundedTranslate(
                   primaryCursorPosition,
-                  primaryMagnetWidth,
+                  primaryMagnetWidthRef.current,
                   graphWidth
                 ),
               },
@@ -253,10 +261,10 @@ export const ForecastTab: React.FC<Props> = ({
             zIndex: 1,
           }}
           onLayout={(e) =>
-            primaryMagnetWidth != Math.round(e.nativeEvent.layout.width)
-              ? setPrimaryMagnetWidth(Math.round(e.nativeEvent.layout.width))
-              : ""
-          } // todo find a better way... this may cause infinite render. rounding helps but still not great
+            (primaryMagnetWidthRef.current = Math.round(
+              e.nativeEvent.layout.width
+            ))
+          }
         >
           <Text style={{ ...theme.magnetPrimary }}>
             {weekDays[(currTime.getDay() + 6) % 7] +
