@@ -147,7 +147,7 @@ export const ForecastTab: React.FC<Props> = ({
     }
   };
 
-  const graphWidth = 800; // todo make dynamic?
+  const graphWidth = 1000; // todo make dynamic?
 
   const primaryCursorPosition =
     (currentPredictionId / predictions.length) * graphWidth;

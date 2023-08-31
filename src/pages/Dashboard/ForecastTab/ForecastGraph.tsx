@@ -311,6 +311,7 @@ export const ForecastGraph: React.FC<Props> = ({
             //     fill={"url(#value" + graphId + ")"}
             //   />
             // );
+            if (!graphData.length) return <></>;
             return (
               <Path
                 fillOpacity="1"
@@ -324,55 +325,60 @@ export const ForecastGraph: React.FC<Props> = ({
                 // stroke="none"
                 opacity={graphProperties.colors[graphId].opacity}
                 d={
+                  // cf https://css-tricks.com/svg-path-syntax-illustrated-guide/
                   // bottom left
                   "M-10," +
                   (graphHeight + 10) +
                   // top left
-                  "L-10," +
-                  svgHeight(
-                    graphData.length ? graphData[graphId]["value" + graphId] : 0
-                  ) +
-                  graphData.reduce(
-                    (acc, dataPoint, i) =>
-                      acc +
-                      "L" +
-                      (i * graphWidth) / graphData.length +
-                      "," +
-                      svgHeight(dataPoint["value" + graphId]) +
-                      " ",
-                    ""
-                  ) +
+                  "C-10," +
+                  svgHeight(graphData[0]["value" + graphId]) +
+                  " -10," +
+                  svgHeight(graphData[0]["value" + graphId]) +
+                  " -10," +
+                  svgHeight(graphData[0]["value" + graphId]) +
+                  graphData.reduce((acc, dataPoint, i) => {
+                    const prevId = Math.max(0, i - 1);
+                    const prevY = svgHeight(
+                      graphData[prevId]["value" + graphId]
+                    );
+                    const nextId = Math.min(i + 1, graphData.length - 1);
+                    const nextY = svgHeight(
+                      graphData[nextId]["value" + graphId]
+                    );
+                    // console.log("prevId ", prevId);
+                    // console.log("nextId ", nextId);
+                    const pointX = (i * graphWidth) / graphData.length;
+                    const pointY = svgHeight(dataPoint["value" + graphId]);
+                    // console.log("pointX ", pointX);
+                    // console.log("pointY ", pointY);
+                    // using derivative to get handle position
+                    const handleX =
+                      ((i - 0.25) * graphWidth) / graphData.length;
+                    const handleY =
+                      pointY -
+                      (prevY + nextY) * 0.5 +
+                      (1 - 0.375) * prevY +
+                      0.375 * nextY;
+                    // console.log("handleX ", handleX);
+                    // console.log("handleY ", handleY);
+
+                    // return acc + "L" + pointX + "," + pointY + " ";
+                    return `${acc}S${handleX},${handleY} ${pointX} ${pointY}`;
+                  }, "") +
                   // top right
                   "L" +
-                  graphWidth +
-                  10 +
+                  (graphWidth + 10) +
                   "," +
-                  svgHeight(
-                    graphData.length > 0
-                      ? graphData[graphData.length - 1]["value" + graphId]
-                      : 0
+                  (svgHeight(
+                    graphData[graphData.length - 1]["value" + graphId]
                   ) +
-                  10 +
+                    10) +
                   // bottom right
                   "L" +
-                  graphWidth +
-                  10 +
+                  (graphWidth + 10) +
                   "," +
-                  graphHeight +
-                  10
+                  (graphHeight + 10)
                 }
-                // width={console.log(
-                //   graphData.reduce(
-                //     (acc, dataPoint, i) =>
-                //       acc +
-                //       "L " +
-                //       (i * graphWidth) / graphData.length +
-                //       " " +
-                //       dataPoint.value0 +
-                //       " ",
-                //     ""
-                //   )
-                // )}
               />
             );
           })}
