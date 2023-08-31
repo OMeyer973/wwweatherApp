@@ -146,7 +146,7 @@ const fetchTideData = async (coordinates: Coordinates) => {
     }
   );
   const data = await res.json();
-  console.log("received tide data");
+  // console.log("received tide data");
   return data;
 };
 

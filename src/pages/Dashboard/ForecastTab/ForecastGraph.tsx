@@ -22,7 +22,15 @@ import { Location, WindData, WavesData, WWWData } from "types";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 import { angleToCardinal, clamp } from "../../../utils";
-import { Svg, SvgUri, Line, Path } from "react-native-svg";
+import {
+  Svg,
+  SvgUri,
+  Line,
+  Path,
+  Defs,
+  LinearGradient,
+  Stop,
+} from "react-native-svg";
 import SimpleDropdown from "../../../common/SimpleDropdown";
 import { oneHour } from "../../../constants";
 import { makeRelativeTimeLabel } from "../TimeTab";
@@ -258,7 +266,34 @@ export const ForecastGraph: React.FC<Props> = ({
             );
           })}
 
-          {graphProperties.colors.map((_, id, array) => {
+          <Defs>
+            {graphProperties.colors.map((item, graphId: number) => (
+              <LinearGradient
+                key={graphId}
+                id={"value" + graphId}
+                x1={0}
+                x2={graphWidth}
+                gradientUnits="userSpaceOnUse"
+              >
+                {graphData.map((item, id) => (
+                  <Stop
+                    key={id}
+                    offset={id / graphData.length}
+                    stopColor={graphProperties.colors[graphId].gradient
+                      .eval(
+                        graphProperties.maxY == 0
+                          ? 0
+                          : graphData[id]["value" + graphId] /
+                              graphProperties.maxY
+                      )
+                      .hex()}
+                  />
+                ))}
+              </LinearGradient>
+            ))}
+          </Defs>
+
+          {graphProperties.colors.map((colorScheme, id, array) => {
             const graphId = array.length - id - 1;
             const item = array[graphId];
             // return (
@@ -280,34 +315,45 @@ export const ForecastGraph: React.FC<Props> = ({
               <Path
                 fillOpacity="1"
                 strokeWidth={item.fatStroke ? s(4) : s(2)}
-                fill="#000"
-                stroke={graphProperties.colors[0].strokeColor.hex()}
-                // fill="url(#value1)"
+                // fill="#000"
+                stroke={graphProperties.colors[graphId].strokeColor.hex()}
+                fill={"url(#value" + graphId + ")"}
                 // width="730"
+
                 // height="68"
                 // stroke="none"
-                // opacity={graphProperties.colors[0].opacity}
+                opacity={graphProperties.colors[graphId].opacity}
                 d={
+                  // bottom left
                   "M-10," +
                   (graphHeight + 10) +
+                  // top left
                   "L-10," +
-                  svgHeight(graphData.length ? graphData[0].value0 : 0) +
+                  svgHeight(
+                    graphData.length ? graphData[graphId]["value" + graphId] : 0
+                  ) +
                   graphData.reduce(
                     (acc, dataPoint, i) =>
                       acc +
                       "L" +
                       (i * graphWidth) / graphData.length +
                       "," +
-                      svgHeight(dataPoint.value0) +
+                      svgHeight(dataPoint["value" + graphId]) +
                       " ",
                     ""
                   ) +
+                  // top right
                   "L" +
                   graphWidth +
                   10 +
                   "," +
-                  graphHeight +
+                  svgHeight(
+                    graphData.length > 0
+                      ? graphData[graphData.length - 1]["value" + graphId]
+                      : 0
+                  ) +
                   10 +
+                  // bottom right
                   "L" +
                   graphWidth +
                   10 +
@@ -338,33 +384,7 @@ export const ForecastGraph: React.FC<Props> = ({
           data={graphData}
           margin={{ top: 2, right: 0, left: 1, bottom: 0 }}
         >
-          <defs>
-            {graphProperties.colors.map((item, graphId: number) => (
-              <linearGradient
-                key={graphId}
-                id={"value" + graphId}
-                x1="0"
-                y1="0"
-                x2="1"
-                y2="0"
-              >
-                {graphData.map((item, id) => (
-                  <stop
-                    key={id}
-                    offset={"" + (id / graphData.length) * 100 + "%"}
-                    stopColor={graphProperties.colors[graphId].gradient
-                      .eval(
-                        graphProperties.maxY == 0
-                          ? 0
-                          : graphData[id]["value" + graphId] /
-                              graphProperties.maxY
-                      )
-                      .hex()}
-                  />
-                ))}
-              </linearGradient>
-            ))}
-          </defs>
+
           <XAxis dataKey="time" ticks={[0]} />
           <YAxis
             domain={[
